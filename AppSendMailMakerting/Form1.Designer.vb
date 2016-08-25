@@ -22,6 +22,7 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.btnThemNguoiNhan = New System.Windows.Forms.Button()
@@ -80,6 +81,11 @@ Partial Class Form1
         Me.pbTienTrinh = New System.Windows.Forms.ProgressBar()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.txtTienTrinh = New System.Windows.Forms.TextBox()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
+        Me.ColorDialog1 = New System.Windows.Forms.ColorDialog()
+        Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
@@ -87,6 +93,7 @@ Partial Class Form1
         Me.GroupBox3.SuspendLayout()
         Me.ToolStrip2.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
+        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -116,6 +123,7 @@ Partial Class Form1
         Me.btnThemNguoiNhan.Size = New System.Drawing.Size(92, 42)
         Me.btnThemNguoiNhan.TabIndex = 2
         Me.btnThemNguoiNhan.Text = "Thêm người nhận"
+        Me.ToolTip1.SetToolTip(Me.btnThemNguoiNhan, "Import dánh sách người nhận từ máy tính cá nhân")
         Me.btnThemNguoiNhan.UseVisualStyleBackColor = True
         '
         'btnXoaTrong
@@ -125,6 +133,7 @@ Partial Class Form1
         Me.btnXoaTrong.Size = New System.Drawing.Size(92, 42)
         Me.btnXoaTrong.TabIndex = 2
         Me.btnXoaTrong.Text = "Xóa trống"
+        Me.ToolTip1.SetToolTip(Me.btnXoaTrong, "Xóa trống cái trường dữ liệu")
         Me.btnXoaTrong.UseVisualStyleBackColor = True
         '
         'btnGuiMail
@@ -134,6 +143,7 @@ Partial Class Form1
         Me.btnGuiMail.Size = New System.Drawing.Size(92, 42)
         Me.btnGuiMail.TabIndex = 2
         Me.btnGuiMail.Text = "Gửi mail"
+        Me.ToolTip1.SetToolTip(Me.btnGuiMail, "Click để tiến hành gửi mail")
         Me.btnGuiMail.UseVisualStyleBackColor = True
         '
         'txtPassMailNguon
@@ -144,6 +154,7 @@ Partial Class Form1
         Me.txtPassMailNguon.Size = New System.Drawing.Size(248, 20)
         Me.txtPassMailNguon.TabIndex = 1
         Me.txtPassMailNguon.Text = "nhanviet123"
+        Me.ToolTip1.SetToolTip(Me.txtPassMailNguon, "Mật khẩu Email nguồn")
         '
         'Label4
         '
@@ -161,6 +172,7 @@ Partial Class Form1
         Me.txtMailNguon.Size = New System.Drawing.Size(248, 20)
         Me.txtMailNguon.TabIndex = 1
         Me.txtMailNguon.Text = "it007bk@gmail.com"
+        Me.ToolTip1.SetToolTip(Me.txtMailNguon, "Email nguồn, nơi email bắt đầu phát tán")
         '
         'Label3
         '
@@ -178,6 +190,7 @@ Partial Class Form1
         Me.txtHost.Size = New System.Drawing.Size(564, 20)
         Me.txtHost.TabIndex = 1
         Me.txtHost.Text = "smtp.gmail.com"
+        Me.ToolTip1.SetToolTip(Me.txtHost, "Địa chỉ HOST gửi mail")
         '
         'Label2
         '
@@ -194,6 +207,7 @@ Partial Class Form1
         Me.txtTieuDe.Name = "txtTieuDe"
         Me.txtTieuDe.Size = New System.Drawing.Size(564, 20)
         Me.txtTieuDe.TabIndex = 1
+        Me.ToolTip1.SetToolTip(Me.txtTieuDe, "Tiêu đề Email : Cần nhập tiêu đề mang tính gợi nhớ, thu hút người đọc")
         '
         'Label1
         '
@@ -234,6 +248,7 @@ Partial Class Form1
         Me.tbtnXoaDanhSach.Name = "tbtnXoaDanhSach"
         Me.tbtnXoaDanhSach.Size = New System.Drawing.Size(23, 22)
         Me.tbtnXoaDanhSach.Text = "ToolStripButton1"
+        Me.tbtnXoaDanhSach.ToolTipText = "Xóa toàn bộ danh sách khách hàng"
         '
         'tbtnDeleteItemDanhSach
         '
@@ -243,6 +258,7 @@ Partial Class Form1
         Me.tbtnDeleteItemDanhSach.Name = "tbtnDeleteItemDanhSach"
         Me.tbtnDeleteItemDanhSach.Size = New System.Drawing.Size(23, 22)
         Me.tbtnDeleteItemDanhSach.Text = "ToolStripButton2"
+        Me.tbtnDeleteItemDanhSach.ToolTipText = "Xóa khách hàng khỏi danh sách"
         '
         'ToolStripSeparator1
         '
@@ -263,6 +279,7 @@ Partial Class Form1
         Me.tbtnLoadDanhSach.Name = "tbtnLoadDanhSach"
         Me.tbtnLoadDanhSach.Size = New System.Drawing.Size(23, 22)
         Me.tbtnLoadDanhSach.Text = "ToolStripButton3"
+        Me.tbtnLoadDanhSach.ToolTipText = "Import danh sách khách hàng nhận mail"
         '
         'ToolStripSeparator6
         '
@@ -277,6 +294,7 @@ Partial Class Form1
         Me.tbtnLuuDanhSach.Name = "tbtnLuuDanhSach"
         Me.tbtnLuuDanhSach.Size = New System.Drawing.Size(23, 22)
         Me.tbtnLuuDanhSach.Text = "ToolStripButton23"
+        Me.tbtnLuuDanhSach.ToolTipText = "Lưu danh sách khách hàng"
         '
         'dgvLstNguoiNhan
         '
@@ -288,6 +306,7 @@ Partial Class Form1
         Me.dgvLstNguoiNhan.RowHeadersVisible = False
         Me.dgvLstNguoiNhan.Size = New System.Drawing.Size(227, 375)
         Me.dgvLstNguoiNhan.TabIndex = 0
+        Me.ToolTip1.SetToolTip(Me.dgvLstNguoiNhan, "Danh sách nhận mail")
         '
         'Email
         '
@@ -328,6 +347,7 @@ Partial Class Form1
         Me.tbtnDan.Name = "tbtnDan"
         Me.tbtnDan.Size = New System.Drawing.Size(23, 22)
         Me.tbtnDan.Text = "ToolStripButton4"
+        Me.tbtnDan.ToolTipText = "Dán"
         '
         'tbtnCopy
         '
@@ -337,6 +357,7 @@ Partial Class Form1
         Me.tbtnCopy.Name = "tbtnCopy"
         Me.tbtnCopy.Size = New System.Drawing.Size(23, 22)
         Me.tbtnCopy.Text = "ToolStripButton5"
+        Me.tbtnCopy.ToolTipText = "Copy"
         '
         'tbtnCut
         '
@@ -346,6 +367,7 @@ Partial Class Form1
         Me.tbtnCut.Name = "tbtnCut"
         Me.tbtnCut.Size = New System.Drawing.Size(23, 22)
         Me.tbtnCut.Text = "ToolStripButton6"
+        Me.tbtnCut.ToolTipText = "Cut"
         '
         'ToolStripSeparator2
         '
@@ -354,8 +376,13 @@ Partial Class Form1
         '
         'tcbFontFamily
         '
+        Me.tcbFontFamily.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.tcbFontFamily.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.tcbFontFamily.AutoToolTip = True
         Me.tcbFontFamily.Name = "tcbFontFamily"
         Me.tcbFontFamily.Size = New System.Drawing.Size(121, 25)
+        Me.tcbFontFamily.Text = "Times New Roman"
+        Me.tcbFontFamily.ToolTipText = "Chọn Font Chữ"
         '
         'tcbFontWidth
         '
@@ -363,6 +390,7 @@ Partial Class Form1
         Me.tcbFontWidth.Name = "tcbFontWidth"
         Me.tcbFontWidth.Size = New System.Drawing.Size(75, 25)
         Me.tcbFontWidth.Text = "11"
+        Me.tcbFontWidth.ToolTipText = "Chọn cỡ chữ"
         '
         'tbtnInDam
         '
@@ -372,6 +400,7 @@ Partial Class Form1
         Me.tbtnInDam.Name = "tbtnInDam"
         Me.tbtnInDam.Size = New System.Drawing.Size(23, 22)
         Me.tbtnInDam.Text = "ToolStripButton7"
+        Me.tbtnInDam.ToolTipText = "Im đậm"
         '
         'tbtnInNghien
         '
@@ -381,6 +410,7 @@ Partial Class Form1
         Me.tbtnInNghien.Name = "tbtnInNghien"
         Me.tbtnInNghien.Size = New System.Drawing.Size(23, 22)
         Me.tbtnInNghien.Text = "ToolStripButton8"
+        Me.tbtnInNghien.ToolTipText = "In nghiên"
         '
         'tbtnGachChan
         '
@@ -390,6 +420,7 @@ Partial Class Form1
         Me.tbtnGachChan.Name = "tbtnGachChan"
         Me.tbtnGachChan.Size = New System.Drawing.Size(23, 22)
         Me.tbtnGachChan.Text = "ToolStripButton9"
+        Me.tbtnGachChan.ToolTipText = "Gạch chân"
         '
         'ToolStripSeparator3
         '
@@ -404,6 +435,7 @@ Partial Class Form1
         Me.tbtnCanhTrai.Name = "tbtnCanhTrai"
         Me.tbtnCanhTrai.Size = New System.Drawing.Size(23, 22)
         Me.tbtnCanhTrai.Text = "ToolStripButton10"
+        Me.tbtnCanhTrai.ToolTipText = "Canh trái"
         '
         'tbtnCanhGiua
         '
@@ -413,6 +445,7 @@ Partial Class Form1
         Me.tbtnCanhGiua.Name = "tbtnCanhGiua"
         Me.tbtnCanhGiua.Size = New System.Drawing.Size(23, 22)
         Me.tbtnCanhGiua.Text = "ToolStripButton11"
+        Me.tbtnCanhGiua.ToolTipText = "Canh giữa"
         '
         'tbtnCanhPhai
         '
@@ -422,6 +455,7 @@ Partial Class Form1
         Me.tbtnCanhPhai.Name = "tbtnCanhPhai"
         Me.tbtnCanhPhai.Size = New System.Drawing.Size(23, 22)
         Me.tbtnCanhPhai.Text = "ToolStripButton12"
+        Me.tbtnCanhPhai.ToolTipText = "Canh phải"
         '
         'tbtnCanhDieu
         '
@@ -431,6 +465,7 @@ Partial Class Form1
         Me.tbtnCanhDieu.Name = "tbtnCanhDieu"
         Me.tbtnCanhDieu.Size = New System.Drawing.Size(23, 22)
         Me.tbtnCanhDieu.Text = "ToolStripButton13"
+        Me.tbtnCanhDieu.ToolTipText = "Canh điều"
         '
         'ToolStripSeparator4
         '
@@ -445,6 +480,7 @@ Partial Class Form1
         Me.tbtnChenAnh.Name = "tbtnChenAnh"
         Me.tbtnChenAnh.Size = New System.Drawing.Size(23, 22)
         Me.tbtnChenAnh.Text = "ToolStripButton14"
+        Me.tbtnChenAnh.ToolTipText = "Chèn ảnh"
         '
         'tbtnChenLink
         '
@@ -454,6 +490,7 @@ Partial Class Form1
         Me.tbtnChenLink.Name = "tbtnChenLink"
         Me.tbtnChenLink.Size = New System.Drawing.Size(23, 22)
         Me.tbtnChenLink.Text = "ToolStripButton15"
+        Me.tbtnChenLink.ToolTipText = "Chèn liên kết"
         '
         'ToolStripSeparator5
         '
@@ -468,6 +505,7 @@ Partial Class Form1
         Me.tbtnDanhSo.Name = "tbtnDanhSo"
         Me.tbtnDanhSo.Size = New System.Drawing.Size(23, 22)
         Me.tbtnDanhSo.Text = "ToolStripButton16"
+        Me.tbtnDanhSo.ToolTipText = "Đánh số danh sách"
         '
         'tbtnList
         '
@@ -477,6 +515,7 @@ Partial Class Form1
         Me.tbtnList.Name = "tbtnList"
         Me.tbtnList.Size = New System.Drawing.Size(23, 22)
         Me.tbtnList.Text = "ToolStripButton17"
+        Me.tbtnList.ToolTipText = "Đánh dấu danh sách"
         '
         'tbtnSizeLon
         '
@@ -486,6 +525,7 @@ Partial Class Form1
         Me.tbtnSizeLon.Name = "tbtnSizeLon"
         Me.tbtnSizeLon.Size = New System.Drawing.Size(23, 22)
         Me.tbtnSizeLon.Text = "ToolStripButton18"
+        Me.tbtnSizeLon.ToolTipText = "Chữ lệnh trên"
         '
         'tbtnSizeNho
         '
@@ -495,6 +535,7 @@ Partial Class Form1
         Me.tbtnSizeNho.Name = "tbtnSizeNho"
         Me.tbtnSizeNho.Size = New System.Drawing.Size(23, 22)
         Me.tbtnSizeNho.Text = "ToolStripButton19"
+        Me.tbtnSizeNho.ToolTipText = "Chữ lệch dưới"
         '
         'ToolStripSeparator7
         '
@@ -509,6 +550,7 @@ Partial Class Form1
         Me.tbtnMauChu.Name = "tbtnMauChu"
         Me.tbtnMauChu.Size = New System.Drawing.Size(23, 22)
         Me.tbtnMauChu.Text = "ToolStripButton20"
+        Me.tbtnMauChu.ToolTipText = "Chọn màu chữ"
         '
         'tbtnMauNen
         '
@@ -518,6 +560,7 @@ Partial Class Form1
         Me.tbtnMauNen.Name = "tbtnMauNen"
         Me.tbtnMauNen.Size = New System.Drawing.Size(23, 22)
         Me.tbtnMauNen.Text = "ToolStripButton21"
+        Me.tbtnMauNen.ToolTipText = "Chọn màu nền"
         '
         'ToolStripSeparator8
         '
@@ -532,6 +575,7 @@ Partial Class Form1
         Me.tbtnDinhKem.Name = "tbtnDinhKem"
         Me.tbtnDinhKem.Size = New System.Drawing.Size(23, 22)
         Me.tbtnDinhKem.Text = "ToolStripButton22"
+        Me.tbtnDinhKem.ToolTipText = "Đính kèm file"
         '
         'contentMail
         '
@@ -540,6 +584,7 @@ Partial Class Form1
         Me.contentMail.Name = "contentMail"
         Me.contentMail.Size = New System.Drawing.Size(797, 374)
         Me.contentMail.TabIndex = 0
+        Me.ToolTip1.SetToolTip(Me.contentMail, "Nội dung Email")
         Me.contentMail.Url = New System.Uri("", System.UriKind.Relative)
         '
         'pbTienTrinh
@@ -568,6 +613,16 @@ Partial Class Form1
         Me.txtTienTrinh.ScrollBars = System.Windows.Forms.ScrollBars.Both
         Me.txtTienTrinh.Size = New System.Drawing.Size(368, 87)
         Me.txtTienTrinh.TabIndex = 0
+        Me.ToolTip1.SetToolTip(Me.txtTienTrinh, "Log tiến trình xử lý gửi mail")
+        '
+        'SaveFileDialog1
+        '
+        Me.SaveFileDialog1.FileName = "KhachHang.xlsx"
+        '
+        'FileSystemWatcher1
+        '
+        Me.FileSystemWatcher1.EnableRaisingEvents = True
+        Me.FileSystemWatcher1.SynchronizingObject = Me
         '
         'Form1
         '
@@ -595,6 +650,7 @@ Partial Class Form1
         Me.ToolStrip2.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
+        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -656,5 +712,9 @@ Partial Class Form1
     Friend WithEvents tbtnLuuDanhSach As System.Windows.Forms.ToolStripButton
     Friend WithEvents Email As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents KhachHang As System.Windows.Forms.DataGridViewTextBoxColumn
-
+    Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
+    Friend WithEvents SaveFileDialog1 As SaveFileDialog
+    Friend WithEvents ColorDialog1 As ColorDialog
+    Friend WithEvents FileSystemWatcher1 As IO.FileSystemWatcher
 End Class

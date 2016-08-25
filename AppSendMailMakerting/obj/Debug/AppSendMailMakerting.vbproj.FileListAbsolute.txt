@@ -8,3 +8,15 @@ C:\Users\may5\Desktop\VIETNHAN020\DUAN\AppSendMailMakerting\AppSendMailMakerting
 C:\Users\may5\Desktop\VIETNHAN020\DUAN\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.exe
 C:\Users\may5\Desktop\VIETNHAN020\DUAN\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.xml
 C:\Users\may5\Desktop\VIETNHAN020\DUAN\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.pdb
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.exe.config
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.exe
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.xml
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.pdb
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.exe
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.pdb
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.xml
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.vbprojResolveAssemblyReference.cache
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.Form1.resources
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.Resources.resources
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.vbproj.GenerateResource.Cache
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.vbproj.ResolveComReference.cache
