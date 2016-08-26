@@ -3,6 +3,8 @@ Imports System.Net.Mail
 Imports System.Text
 
 Public Class Form1
+    Private lstEmail As New List(Of String)
+    Private lstDinhKem As New LinkedList(Of String)
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         For Each f In FontFamily.Families
@@ -63,7 +65,7 @@ Public Class Form1
         subSendMail("it007bk@gmail.com", listNhan, txtTieuDe.Text, contentMail.Document.Body.InnerHtml, Nothing)
     End Sub
 
-    Private Sub tbtnLoadDanhSach_Click(sender As Object, e As EventArgs) Handles tbtnLoadDanhSach.Click
+    Private Sub tbtnLoadDanhSach_Click(sender As Object, e As EventArgs) Handles tbtnLoadDanhSach.Click, btnThemNguoiNhan.Click
         OpenFileDialog1.Filter = "All data|*.xlsx;*.xls"
         Dim btnResult As DialogResult = OpenFileDialog1.ShowDialog
         If btnResult = DialogResult.OK Then
@@ -73,6 +75,7 @@ Public Class Form1
             dgvLstNguoiNhan.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
             dgvLstNguoiNhan.Columns(1).HeaderText = "Khách hàng"
             dgvLstNguoiNhan.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
         End If
     End Sub
 
@@ -107,36 +110,207 @@ Public Class Form1
     End Function
 
     Private Sub tbtnLuuDanhSach_Click(sender As Object, e As EventArgs) Handles tbtnLuuDanhSach.Click
-        SaveFileDialog1.Filter = "Excel 2007|*.xlsx|Excel 2003|*.xls"
-        Dim btnResult As DialogResult = SaveFileDialog1.ShowDialog
-        If btnResult = DialogResult.OK Then
-            Dim pathMau As String = Application.StartupPath.Replace("\bin\Debug", "").Replace("\bin\Release", "") & "\Resources\MauKhachHang.xlsx"
+        MsgBox(dgvLstNguoiNhan.Rows.Count)
+        If dgvLstNguoiNhan.Rows.Count > 1 Then
+            SaveFileDialog1.Filter = "Excel 2007|*.xlsx|Excel 2003|*.xls"
+            Dim btnResult As DialogResult = SaveFileDialog1.ShowDialog
+            If btnResult = DialogResult.OK Then
+                Dim pathMau As String = Application.StartupPath.Replace("\bin\Debug", "").Replace("\bin\Release", "") & "\Resources\MauKhachHang.xlsx"
+                Try
+                    If File.Exists(pathMau) Then
+                        File.Copy(pathMau, SaveFileDialog1.FileName, True)
+                        saveExcel(SaveFileDialog1.FileName)
+                    End If
+                Catch ex As Exception
+                    MsgBox("Lỗi xuất dữ liệu!" & vbCrLf & "Vui lòng thao tác lại sau." & ex.ToString, MsgBoxStyle.OkOnly, "Lỗi xuất dữ liệu Excel !!!")
+                End Try
+            End If
+        Else
+            MsgBox("Không có dữ liệu để xuất !!!" & vbCrLf & "Vui lòng chèn dữ liệu vào danh sách khách hàng trước.", MsgBoxStyle.OkOnly, "Dữ liệu rỗng !!!")
+        End If
+    End Sub
+
+    Private Sub saveExcel(ByVal path As String)
+        Dim oldCI As System.Globalization.CultureInfo = _
+            System.Threading.Thread.CurrentThread.CurrentCulture
+        System.Threading.Thread.CurrentThread.CurrentCulture = _
+            New System.Globalization.CultureInfo("en-US")
+
+        Try
+            Dim xlApp As Object
+            xlApp = CreateObject("Excel.Application")
+            Dim xlBook As Object = xlApp.Workbooks.Open(path)
+            Dim xlSheet As Object = xlBook.Worksheets(1)
+            Dim index As Integer = 2
+
+            For Each info As DataGridViewRow In dgvLstNguoiNhan.Rows
+                xlSheet.Range("A" & index).Value = info.Cells(0).Value
+                xlSheet.Range("B" & index).Value = info.Cells(1).Value
+                index += 1
+            Next
+            
+            xlBook.Save()
+            xlBook.Close()
+            xlApp.Quit()
+
+        Catch ex As Exception
+            MsgBox("Không xuất được dữ liệu ra file Excel!!!" & vbCrLf & "Vui lòng Reset lại Office và thử lại sau.")
+        End Try
+
+        System.Threading.Thread.CurrentThread.CurrentCulture = oldCI
+    End Sub
+
+    Private Sub dgvLstNguoiNhan_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles dgvLstNguoiNhan.CellEndEdit
+        If e.ColumnIndex = 0 Then
             Try
-                If File.Exists(pathMau) Then
-                    File.Copy(pathMau, SaveFileDialog1.FileName, True)
-                    Dim myconnection As System.Data.OleDb.OleDbConnection = Nothing
-                    Dim dtResult As New DataTable
-                    Try
-                        Dim Mycommand As System.Data.OleDb.OleDbCommand = Nothing
-                        Dim strConnectionString As String = GetConnectionString(pathMau)
-                        myconnection = New System.Data.OleDb.OleDbConnection(strConnectionString)
-                        Mycommand = New System.Data.OleDb.OleDbCommand("insert into [KhachHang$] values ('it007bk@gmail.com', 'Hồ Viết Nhân' )", myconnection)
-                        'Mycommand.CommandText = ""
-                        'Mycommand.CommandType = CommandType.Text
-                        'Mycommand.Connection = myconnection
-                        'Mycommand.Parameters.AddWithValue("@email", "it007bk@gmail.com")
-                        'Mycommand.Parameters.AddWithValue("@khach", "Hồ Viết Nhân")
-                        Mycommand.Connection = myconnection
-                        myconnection.Open()
-                        Mycommand.ExecuteNonQuery()
-                        myconnection.Close()
-                    Catch ex As Exception
-                        MsgBox(ex.ToString)
-                    End Try
-                End If
+                Dim a As New System.Net.Mail.MailAddress(dgvLstNguoiNhan(e.ColumnIndex, e.RowIndex).Value)
+                Me.dgvLstNguoiNhan(e.ColumnIndex, e.RowIndex).ErrorText = Nothing
             Catch ex As Exception
-                MsgBox("Lỗi xuất dữ liệu!" & vbCrLf & "Vui lòng thao tác lại sau." & ex.ToString, MsgBoxStyle.OkOnly, "Lỗi xuất dữ liệu Excel !!!")
+                Me.dgvLstNguoiNhan(e.ColumnIndex, e.RowIndex).ErrorText = "Không phải địa chỉ Email"
             End Try
         End If
     End Sub
+
+    Private Sub tbtnDeleteItemDanhSach_Click(sender As Object, e As EventArgs) Handles tbtnDeleteItemDanhSach.Click
+        Try
+            dgvLstNguoiNhan.Rows.RemoveAt(dgvLstNguoiNhan.CurrentRow.Index)
+        Catch ex As Exception
+            MsgBox("Bạn chưa chọn hàng để xóa !!!", MsgBoxStyle.OkOnly, "Lỗi !!!")
+        End Try
+    End Sub
+
+    Private Sub tbtnXoaDanhSach_Click(sender As Object, e As EventArgs) Handles tbtnXoaDanhSach.Click
+        dgvLstNguoiNhan.Rows.Clear()
+        tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
+    End Sub
+
+    Private Sub dgvLstNguoiNhan_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgvLstNguoiNhan.RowsAdded
+        tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
+    End Sub
+
+    Private Sub dgvLstNguoiNhan_RowsRemoved(sender As Object, e As DataGridViewRowsRemovedEventArgs) Handles dgvLstNguoiNhan.RowsRemoved
+        tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
+    End Sub
+
+    Private Sub txtMailNguon_Validated(sender As Object, e As EventArgs) Handles txtMailNguon.Validated
+        Try
+            Dim a As New System.Net.Mail.MailAddress(txtMailNguon.Text)
+            txtMailNguon.BackColor = Nothing
+        Catch ex As Exception
+            txtMailNguon.BackColor = Color.LightCoral
+            txtMailNguon.SelectAll()
+            txtMailNguon.Focus()
+        End Try
+    End Sub
+
+    Private Sub tbtnDan_Click(sender As Object, e As EventArgs) Handles tbtnDan.Click
+        contentMail.Document.ExecCommand("Paste", False, Nothing)
+    End Sub
+
+    Private Sub tbtnCopy_Click(sender As Object, e As EventArgs) Handles tbtnCopy.Click
+        contentMail.Document.ExecCommand("Copy", False, Nothing)
+    End Sub
+
+    Private Sub tbtnCut_Click(sender As Object, e As EventArgs) Handles tbtnCut.Click
+        contentMail.Document.ExecCommand("Cut", False, Nothing)
+    End Sub
+
+    Private Sub tcbFontFamily_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tcbFontFamily.SelectedIndexChanged
+        Try
+            contentMail.Document.ExecCommand("FontName", False, tcbFontFamily.Text)
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Private Sub tcbFontWidth_TextChanged(sender As Object, e As EventArgs) Handles tcbFontWidth.TextChanged
+        If Not IsNumeric(tcbFontWidth.Text) Then
+            tcbFontWidth.Text = 11
+        End If
+
+        Try
+            contentMail.Document.ExecCommand("FontSize", True, CInt(tcbFontWidth.Text))
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Private Sub tbtnInDam_Click(sender As Object, e As EventArgs) Handles tbtnInDam.Click
+        contentMail.Document.ExecCommand("Bold", False, Nothing)
+    End Sub
+
+    Private Sub tbtnInNghien_Click(sender As Object, e As EventArgs) Handles tbtnInNghien.Click
+        contentMail.Document.ExecCommand("Italic", False, Nothing)
+    End Sub
+
+    Private Sub tbtnGachChan_Click(sender As Object, e As EventArgs) Handles tbtnGachChan.Click
+        contentMail.Document.ExecCommand("Underline", False, Nothing)
+    End Sub
+
+    Private Sub tbtnCanhTrai_Click(sender As Object, e As EventArgs) Handles tbtnCanhTrai.Click
+        contentMail.Document.ExecCommand("justifyLeft", False, Nothing)
+    End Sub
+
+    Private Sub tbtnCanhGiua_Click(sender As Object, e As EventArgs) Handles tbtnCanhGiua.Click
+        contentMail.Document.ExecCommand("justifyCenter", False, Nothing)
+    End Sub
+
+    Private Sub tbtnCanhPhai_Click(sender As Object, e As EventArgs) Handles tbtnCanhPhai.Click
+        contentMail.Document.ExecCommand("justifyRight", False, Nothing)
+    End Sub
+
+    Private Sub tbtnCanhDieu_Click(sender As Object, e As EventArgs) Handles tbtnCanhDieu.Click
+        contentMail.Document.ExecCommand("justifyFull", False, Nothing)
+    End Sub
+
+    Private Sub tbtnChenAnh_Click(sender As Object, e As EventArgs) Handles tbtnChenAnh.Click
+        contentMail.Document.ExecCommand("insertImage", True, Nothing)
+    End Sub
+
+    Private Sub tbtnChenLink_Click(sender As Object, e As EventArgs) Handles tbtnChenLink.Click
+        contentMail.Document.ExecCommand("createLink", True, Nothing)
+    End Sub
+
+    Private Sub tbtnDanhSo_Click(sender As Object, e As EventArgs) Handles tbtnDanhSo.Click
+        contentMail.Document.ExecCommand("InsertOrderedList", True, Nothing)
+    End Sub
+
+    Private Sub tbtnList_Click(sender As Object, e As EventArgs) Handles tbtnList.Click
+        contentMail.Document.ExecCommand("insertUnorderedList", False, Nothing)
+    End Sub
+
+    Private Sub tbtnSizeLon_Click(sender As Object, e As EventArgs) Handles tbtnSizeLon.Click
+        contentMail.Document.ExecCommand("superscript", False, Nothing)
+    End Sub
+
+    Private Sub tbtnSizeNho_Click(sender As Object, e As EventArgs) Handles tbtnSizeNho.Click
+        contentMail.Document.ExecCommand("subscript", False, Nothing)
+    End Sub
+
+    Private Sub tbtnMauChu_Click(sender As Object, e As EventArgs) Handles tbtnMauChu.Click
+        Dim btnResult As DialogResult = ColorDialog1.ShowDialog
+        If btnResult = DialogResult.OK Then
+            contentMail.Document.ExecCommand("foreColor", False, ColorTranslator.ToHtml(ColorDialog1.Color))
+        End If
+    End Sub
+
+    Private Sub tbtnMauNen_Click(sender As Object, e As EventArgs) Handles tbtnMauNen.Click
+        Dim btnResult As DialogResult = ColorDialog1.ShowDialog
+        If btnResult = DialogResult.OK Then
+            contentMail.Document.ExecCommand("backColor", False, ColorTranslator.ToHtml(ColorDialog1.Color))
+        End If
+    End Sub
+
+    Private Sub tbtnDinhKem_Click(sender As Object, e As EventArgs) Handles tbtnDinhKem.Click
+        contentMail.Document.ExecCommand("removeFormat", False, Nothing)
+    End Sub
+
+    Private Sub btnSetting_Click(sender As Object, e As EventArgs) Handles btnSetting.Click
+        Dim obj As New SettingForm()
+        obj.ShowDialog()
+    End Sub
+
+    Private Sub btnInfomation_Click(sender As Object, e As EventArgs) Handles btnInfomation.Click
+        Dim obj As New InfomationForm()
+        obj.ShowDialog()
+    End Sub
+
 End Class

@@ -1,0 +1,6 @@
+False
+123456
+smtp.gmail.com
+it007bk@gmail.com
+nhanviet123
+not active

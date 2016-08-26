@@ -24,7 +24,10 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btnSetting = New System.Windows.Forms.Button()
+        Me.btnInfomation = New System.Windows.Forms.Button()
         Me.btnThemNguoiNhan = New System.Windows.Forms.Button()
         Me.btnXoaTrong = New System.Windows.Forms.Button()
         Me.btnGuiMail = New System.Windows.Forms.Button()
@@ -85,7 +88,6 @@ Partial Class Form1
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.ColorDialog1 = New System.Windows.Forms.ColorDialog()
-        Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
@@ -93,11 +95,12 @@ Partial Class Form1
         Me.GroupBox3.SuspendLayout()
         Me.ToolStrip2.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
-        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.btnSetting)
+        Me.GroupBox1.Controls.Add(Me.btnInfomation)
         Me.GroupBox1.Controls.Add(Me.btnThemNguoiNhan)
         Me.GroupBox1.Controls.Add(Me.btnXoaTrong)
         Me.GroupBox1.Controls.Add(Me.btnGuiMail)
@@ -116,33 +119,66 @@ Partial Class Form1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Thông tin email marketing"
         '
+        'btnSetting
+        '
+        Me.btnSetting.Image = CType(resources.GetObject("btnSetting.Image"), System.Drawing.Image)
+        Me.btnSetting.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSetting.Location = New System.Drawing.Point(464, 48)
+        Me.btnSetting.Name = "btnSetting"
+        Me.btnSetting.Size = New System.Drawing.Size(92, 23)
+        Me.btnSetting.TabIndex = 8
+        Me.btnSetting.Text = "Cấu hình"
+        Me.btnSetting.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnSetting.UseVisualStyleBackColor = True
+        '
+        'btnInfomation
+        '
+        Me.btnInfomation.Image = CType(resources.GetObject("btnInfomation.Image"), System.Drawing.Image)
+        Me.btnInfomation.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnInfomation.Location = New System.Drawing.Point(562, 48)
+        Me.btnInfomation.Name = "btnInfomation"
+        Me.btnInfomation.Size = New System.Drawing.Size(92, 23)
+        Me.btnInfomation.TabIndex = 9
+        Me.btnInfomation.Text = "Thông tin"
+        Me.btnInfomation.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnInfomation.UseVisualStyleBackColor = True
+        '
         'btnThemNguoiNhan
         '
+        Me.btnThemNguoiNhan.Font = New System.Drawing.Font("Times New Roman", 11.25!, System.Drawing.FontStyle.Bold)
         Me.btnThemNguoiNhan.Location = New System.Drawing.Point(562, 77)
         Me.btnThemNguoiNhan.Name = "btnThemNguoiNhan"
         Me.btnThemNguoiNhan.Size = New System.Drawing.Size(92, 42)
-        Me.btnThemNguoiNhan.TabIndex = 2
-        Me.btnThemNguoiNhan.Text = "Thêm người nhận"
+        Me.btnThemNguoiNhan.TabIndex = 5
+        Me.btnThemNguoiNhan.Text = "Import người nhận"
         Me.ToolTip1.SetToolTip(Me.btnThemNguoiNhan, "Import dánh sách người nhận từ máy tính cá nhân")
         Me.btnThemNguoiNhan.UseVisualStyleBackColor = True
         '
         'btnXoaTrong
         '
+        Me.btnXoaTrong.Font = New System.Drawing.Font("Times New Roman", 11.25!, System.Drawing.FontStyle.Bold)
+        Me.btnXoaTrong.Image = CType(resources.GetObject("btnXoaTrong.Image"), System.Drawing.Image)
+        Me.btnXoaTrong.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnXoaTrong.Location = New System.Drawing.Point(464, 78)
         Me.btnXoaTrong.Name = "btnXoaTrong"
         Me.btnXoaTrong.Size = New System.Drawing.Size(92, 42)
-        Me.btnXoaTrong.TabIndex = 2
+        Me.btnXoaTrong.TabIndex = 6
         Me.btnXoaTrong.Text = "Xóa trống"
+        Me.btnXoaTrong.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.ToolTip1.SetToolTip(Me.btnXoaTrong, "Xóa trống cái trường dữ liệu")
         Me.btnXoaTrong.UseVisualStyleBackColor = True
         '
         'btnGuiMail
         '
+        Me.btnGuiMail.Font = New System.Drawing.Font("Times New Roman", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnGuiMail.Image = CType(resources.GetObject("btnGuiMail.Image"), System.Drawing.Image)
+        Me.btnGuiMail.ImageAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnGuiMail.Location = New System.Drawing.Point(366, 77)
         Me.btnGuiMail.Name = "btnGuiMail"
         Me.btnGuiMail.Size = New System.Drawing.Size(92, 42)
-        Me.btnGuiMail.TabIndex = 2
+        Me.btnGuiMail.TabIndex = 7
         Me.btnGuiMail.Text = "Gửi mail"
+        Me.btnGuiMail.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.ToolTip1.SetToolTip(Me.btnGuiMail, "Click để tiến hành gửi mail")
         Me.btnGuiMail.UseVisualStyleBackColor = True
         '
@@ -152,7 +188,7 @@ Partial Class Form1
         Me.txtPassMailNguon.Name = "txtPassMailNguon"
         Me.txtPassMailNguon.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.txtPassMailNguon.Size = New System.Drawing.Size(248, 20)
-        Me.txtPassMailNguon.TabIndex = 1
+        Me.txtPassMailNguon.TabIndex = 3
         Me.txtPassMailNguon.Text = "nhanviet123"
         Me.ToolTip1.SetToolTip(Me.txtPassMailNguon, "Mật khẩu Email nguồn")
         '
@@ -170,7 +206,7 @@ Partial Class Form1
         Me.txtMailNguon.Location = New System.Drawing.Point(90, 74)
         Me.txtMailNguon.Name = "txtMailNguon"
         Me.txtMailNguon.Size = New System.Drawing.Size(248, 20)
-        Me.txtMailNguon.TabIndex = 1
+        Me.txtMailNguon.TabIndex = 2
         Me.txtMailNguon.Text = "it007bk@gmail.com"
         Me.ToolTip1.SetToolTip(Me.txtMailNguon, "Email nguồn, nơi email bắt đầu phát tán")
         '
@@ -187,7 +223,7 @@ Partial Class Form1
         '
         Me.txtHost.Location = New System.Drawing.Point(90, 48)
         Me.txtHost.Name = "txtHost"
-        Me.txtHost.Size = New System.Drawing.Size(564, 20)
+        Me.txtHost.Size = New System.Drawing.Size(368, 20)
         Me.txtHost.TabIndex = 1
         Me.txtHost.Text = "smtp.gmail.com"
         Me.ToolTip1.SetToolTip(Me.txtHost, "Địa chỉ HOST gửi mail")
@@ -206,7 +242,7 @@ Partial Class Form1
         Me.txtTieuDe.Location = New System.Drawing.Point(90, 22)
         Me.txtTieuDe.Name = "txtTieuDe"
         Me.txtTieuDe.Size = New System.Drawing.Size(564, 20)
-        Me.txtTieuDe.TabIndex = 1
+        Me.txtTieuDe.TabIndex = 0
         Me.ToolTip1.SetToolTip(Me.txtTieuDe, "Tiêu đề Email : Cần nhập tiêu đề mang tính gợi nhớ, thu hút người đọc")
         '
         'Label1
@@ -298,18 +334,23 @@ Partial Class Form1
         '
         'dgvLstNguoiNhan
         '
+        Me.dgvLstNguoiNhan.AllowUserToResizeRows = False
         Me.dgvLstNguoiNhan.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvLstNguoiNhan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvLstNguoiNhan.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Email, Me.KhachHang})
         Me.dgvLstNguoiNhan.Location = New System.Drawing.Point(3, 44)
+        Me.dgvLstNguoiNhan.MultiSelect = False
         Me.dgvLstNguoiNhan.Name = "dgvLstNguoiNhan"
         Me.dgvLstNguoiNhan.RowHeadersVisible = False
+        Me.dgvLstNguoiNhan.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvLstNguoiNhan.Size = New System.Drawing.Size(227, 375)
         Me.dgvLstNguoiNhan.TabIndex = 0
         Me.ToolTip1.SetToolTip(Me.dgvLstNguoiNhan, "Danh sách nhận mail")
         '
         'Email
         '
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.Email.DefaultCellStyle = DataGridViewCellStyle3
         Me.Email.HeaderText = "Email"
         Me.Email.Name = "Email"
         '
@@ -583,7 +624,7 @@ Partial Class Form1
         Me.contentMail.MinimumSize = New System.Drawing.Size(20, 20)
         Me.contentMail.Name = "contentMail"
         Me.contentMail.Size = New System.Drawing.Size(797, 374)
-        Me.contentMail.TabIndex = 0
+        Me.contentMail.TabIndex = 4
         Me.ToolTip1.SetToolTip(Me.contentMail, "Nội dung Email")
         Me.contentMail.Url = New System.Uri("", System.UriKind.Relative)
         '
@@ -613,16 +654,12 @@ Partial Class Form1
         Me.txtTienTrinh.ScrollBars = System.Windows.Forms.ScrollBars.Both
         Me.txtTienTrinh.Size = New System.Drawing.Size(368, 87)
         Me.txtTienTrinh.TabIndex = 0
+        Me.txtTienTrinh.TabStop = False
         Me.ToolTip1.SetToolTip(Me.txtTienTrinh, "Log tiến trình xử lý gửi mail")
         '
         'SaveFileDialog1
         '
         Me.SaveFileDialog1.FileName = "KhachHang.xlsx"
-        '
-        'FileSystemWatcher1
-        '
-        Me.FileSystemWatcher1.EnableRaisingEvents = True
-        Me.FileSystemWatcher1.SynchronizingObject = Me
         '
         'Form1
         '
@@ -634,6 +671,7 @@ Partial Class Form1
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MinimumSize = New System.Drawing.Size(1082, 624)
         Me.Name = "Form1"
         Me.Text = "Send Mail Marketing"
@@ -650,7 +688,6 @@ Partial Class Form1
         Me.ToolStrip2.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
-        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -710,11 +747,12 @@ Partial Class Form1
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents txtTienTrinh As System.Windows.Forms.TextBox
     Friend WithEvents tbtnLuuDanhSach As System.Windows.Forms.ToolStripButton
-    Friend WithEvents Email As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents KhachHang As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents SaveFileDialog1 As SaveFileDialog
     Friend WithEvents ColorDialog1 As ColorDialog
-    Friend WithEvents FileSystemWatcher1 As IO.FileSystemWatcher
+    Friend WithEvents Email As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents KhachHang As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnSetting As System.Windows.Forms.Button
+    Friend WithEvents btnInfomation As System.Windows.Forms.Button
 End Class
