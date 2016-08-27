@@ -53,7 +53,10 @@ Public Class SettingForm
                     lstString(8) = tbPassword.Text
                 End Try
                 File.WriteAllLines(path, lstString)
-                MsgBox("Đã cập nhật cấu hình thành công", MsgBoxStyle.OkOnly, "Cập nhật thành công")
+                Dim btnResult As DialogResult = MsgBox("Đã cập nhật cấu hình thành công" & vbCrLf & "Bạn thoát khỏi màn hình này không ???", MsgBoxStyle.YesNo, "Cập nhật thành công")
+                If btnResult = DialogResult.Yes Then
+                    Close()
+                End If
             Catch ex As Exception
                 MsgBox("Đã cập nhật cấu hình thất bại!!!", MsgBoxStyle.OkOnly, "Cập nhật thất bại!!!")
             End Try

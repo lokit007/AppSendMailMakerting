@@ -5,45 +5,56 @@ Imports System.Threading
 
 Public Class Form1
     Private lstEmail As List(Of String)
-    Private Shared lstDinhKem As New LinkedList(Of String)
     Private pathData As String = Application.StartupPath.Replace("\bin\Debug", "").Replace("\bin\Release", "") & "\Resources\ThongTin.txt"
 
-    Public Shared Sub deleteDinhKem(ByVal obj As String)
-        lstDinhKem.Remove(obj)
+    'Định nghĩa lại hàm settext
+    Delegate Sub SetTextCallback([text] As String)
+    Private Sub SetText(ByVal [text] As String)
+        If Me.rtbTienTrinh.InvokeRequired Then
+            Dim d As New SetTextCallback(AddressOf SetText)
+            Me.Invoke(d, New Object() {[text]})
+        Else
+            Me.rtbTienTrinh.Text = [text] & Me.rtbTienTrinh.Text
+        End If
+    End Sub
+    'Định nghĩa lại hàm SetValue
+    Delegate Sub SetValueCallback()
+    Private Sub SetValue()
+        If Me.pbTienTrinh.InvokeRequired Then
+            Dim d As New SetValueCallback(AddressOf SetValue)
+            Me.Invoke(d, New Object() {})
+        Else
+            Me.pbTienTrinh.PerformStep()
+        End If
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        If pbTienTrinh.Value >= pbTienTrinh.Maximum Then
+            btnGuiMail.Enabled = True
+            lbWaitSendMail.Visible = False
+            rtbTienTrinh.Text = "********** Hoàn thành tiến trình gửi mail **********" & vbCrLf & rtbTienTrinh.Text
+            Timer1.Stop()
+        End If
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
         For Each f In FontFamily.Families
             tcbFontFamily.Items.Add(f.Name)
         Next
         Dim lstString As String() = File.ReadAllLines(pathData)
         Dim isChange As Boolean = CBool(lstString(0))
         Try
-            If "not active".Equals(lstString(5)) OrElse "active".Equals(lstString(5)) Then
+            txtHost.Text = lstString(6)
+            txtMailNguon.Text = lstString(7)
+            txtPassMailNguon.Text = lstString(8)
+        Catch ex As Exception
+            Try
                 txtHost.Text = lstString(2)
                 txtMailNguon.Text = lstString(3)
                 txtPassMailNguon.Text = lstString(4)
-            End If
-            If isChange Then
-                If "active".Equals(lstString(5)) Then
-                    txtHost.Text = lstString(6)
-                    txtMailNguon.Text = lstString(7)
-                    txtPassMailNguon.Text = lstString(8)
-                Else
-                    btnSetting_Click(sender, e)
-                End If
-            Else
+            Catch ex1 As Exception
                 btnSetting_Click(sender, e)
-            End If
-        Catch ex As Exception
-            If Not isChange Then
-                If "not active".Equals(lstString(5)) OrElse "active".Equals(lstString(5)) Then
-                    txtHost.Text = lstString(2)
-                    txtMailNguon.Text = lstString(3)
-                    txtPassMailNguon.Text = lstString(4)
-                End If
-            End If
+            End Try
         End Try
     End Sub
 
@@ -118,51 +129,46 @@ Public Class Form1
         SMTPServer.EnableSsl = True ' tắt đi do có phần mềm diệt virus không cho (avasst)
         Try
             SMTPServer.Send(MyMailMessage)
+            SetText("Đã gửi đến mail " & emailNhan & vbCrLf)
         Catch ex As SmtpException
             Dim textInsert As String = "Lỗi gửi email đến " & emailNhan & vbCrLf & ex.Message
-            rtbTienTrinh.Text = textInsert & vbCrLf & rtbTienTrinh.Text
-            rtbTienTrinh.Select(0, textInsert.Length)
-            rtbTienTrinh.SelectionColor = Color.Red
+            SetText(textInsert & vbCrLf)
         End Try
-        Exit Sub
+        SetValue()
+    End Sub
+
+    Private Sub ThreadSendMail(ByVal nguoiGui As String, ByVal emailNhan As String,
+                              ByVal tieuDe As String, ByVal noiDung As String,
+                              ByVal lstDinhKem As List(Of String))
+        Dim tienTrinh As New Thread(New ThreadStart(Sub() SendSingeMail(nguoiGui, emailNhan, tieuDe, noiDung, lstDinhKem)))
+        tienTrinh.Start()
     End Sub
 
     Private Sub btnGuiMail_Click(sender As Object, e As EventArgs) Handles btnGuiMail.Click
-        Dim listNhan As New List(Of String)
+        Dim listnhan As New List(Of String)
         If dgvLstNguoiNhan.Rows.Count > 1 Then
             For Each info As DataGridViewRow In dgvLstNguoiNhan.Rows
                 Try
-                    listNhan.Add(info.Cells(0).Value.ToString)
+                    listnhan.Add(info.Cells(0).Value.ToString)
                 Catch ex As Exception
                 End Try
             Next
-            If Not IsNothing(listNhan) AndAlso listNhan.Count > 0 Then
+            If Not IsNothing(listnhan) AndAlso listnhan.Count > 0 Then
                 rtbTienTrinh.Text = ""
                 btnGuiMail.Enabled = False
                 lbWaitSendMail.Visible = True
-                pbTienTrinh.Maximum = listNhan.Count
+                Timer1.Start()
+                pbTienTrinh.Maximum = listnhan.Count
                 pbTienTrinh.Value = 0
-                For Each emailNhan In listNhan
-                    Try
-                        Application.DoEvents()
-                        SendSingeMail("it007bk@gmail.com", emailNhan, txtTieuDe.Text, contentMail.Document.Body.InnerHtml, Nothing)
-                        Dim textInsert As String = "Đã gửi email đến " & emailNhan
-                        rtbTienTrinh.Text = textInsert & vbCrLf & rtbTienTrinh.Text
-                    Catch ex As Exception
-                        Dim textInsert As String = "Lỗi gửi email đến " & emailNhan
-                        rtbTienTrinh.Text = textInsert & vbCrLf & rtbTienTrinh.Text
-                        rtbTienTrinh.Select(0, textInsert.Length)
-                        rtbTienTrinh.SelectionColor = Color.Red
-                    End Try
-                    pbTienTrinh.Value += 1
+                For Each emailnhan In listnhan
+                    ThreadSendMail("it007bk@gmail.com", emailnhan, txtTieuDe.Text, contentMail.Document.Body.InnerHtml, Nothing)
+                    Application.DoEvents()
                 Next
-                rtbTienTrinh.Text = "Tiến trình gửi mail đã hoàn tất." & vbCrLf & rtbTienTrinh.Text
-                btnGuiMail.Enabled = True
-                lbWaitSendMail.Visible = False
             End If
         Else
-            MsgBox("Bạn chưa nhập dánh sách người nhận mail!!!" & vbCrLf & "Vui lòng chèn dữ liệu vào danh sách khách hàng trước.", MsgBoxStyle.OkOnly, "Dữ liệu rỗng !!!")
+            MsgBox("bạn chưa nhập dánh sách người nhận mail!!!" & vbCrLf & "vui lòng chèn dữ liệu vào danh sách khách hàng trước.", MsgBoxStyle.OkOnly, "dữ liệu rỗng !!!")
         End If
+        Exit Sub
     End Sub
 
     Private Sub btnXoaTrong_Click(sender As Object, e As EventArgs) Handles btnXoaTrong.Click
@@ -175,15 +181,31 @@ Public Class Form1
         Dim btnResult As DialogResult = OpenFileDialog1.ShowDialog
         If btnResult = DialogResult.OK Then
             lbWaitLoadData.Visible = True
-            dgvLstNguoiNhan.Columns.Clear()
-            dgvLstNguoiNhan.DataSource = GetListEmail(OpenFileDialog1.FileName, "KhachHang")
-            dgvLstNguoiNhan.Columns(0).HeaderText = "Email"
-            dgvLstNguoiNhan.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-            dgvLstNguoiNhan.Columns(1).HeaderText = "Khách hàng"
-            dgvLstNguoiNhan.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            Dim dtResult As DataTable = GetListEmail(OpenFileDialog1.FileName, "KhachHang")
+            If Not IsNothing(dtResult) AndAlso dtResult.Rows.Count > 0 Then
+                Dim index As Integer = 0
+                For Each row As DataRow In dtResult.Rows
+                    index = dgvLstNguoiNhan.Rows.Add()
+                    dgvLstNguoiNhan(0, index).Value = row.Item(0)
+                    dgvLstNguoiNhan(1, index).Value = row.Item(1)
+                Next
+            End If
             tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
             lbWaitLoadData.Visible = False
         End If
+    End Sub
+
+    Private Sub btnSetting_Click(sender As Object, e As EventArgs) Handles btnSetting.Click
+        Dim obj As New SettingForm()
+        obj.StartPosition = FormStartPosition.CenterScreen
+        obj.ShowDialog()
+        Me.OnLoad(e)
+    End Sub
+
+    Private Sub btnInfomation_Click(sender As Object, e As EventArgs) Handles btnInfomation.Click
+        Dim obj As New InfomationForm()
+        obj.StartPosition = FormStartPosition.CenterScreen
+        obj.ShowDialog()
     End Sub
 
     Private Function GetListEmail(ByVal path As String, ByVal sheetName As String) As DataTable
@@ -379,7 +401,7 @@ Public Class Form1
         contentMail.Document.ExecCommand("justifyFull", False, Nothing)
     End Sub
 
-    Private Sub tbtnChenAnh_Click(sender As Object, e As EventArgs) Handles tbtnChenAnh.Click
+    Private Sub tbtnChenAnh_Click(sender As Object, e As EventArgs)
         contentMail.Document.ExecCommand("insertImage", True, Nothing)
     End Sub
 
@@ -417,16 +439,12 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub btnSetting_Click(sender As Object, e As EventArgs) Handles btnSetting.Click
-        Dim obj As New SettingForm()
-        obj.StartPosition = FormStartPosition.CenterScreen
-        obj.ShowDialog()
+    Private Sub tbtnNewEmail_Click(sender As Object, e As EventArgs) Handles tbtnNewEmail.Click
+        contentMail.Document.Body.InnerHtml = Nothing
     End Sub
 
-    Private Sub btnInfomation_Click(sender As Object, e As EventArgs) Handles btnInfomation.Click
-        Dim obj As New InfomationForm()
-        obj.StartPosition = FormStartPosition.CenterScreen
-        obj.ShowDialog()
+    Private Sub tbtnFormat_Click(sender As Object, e As EventArgs) Handles tbtnFormat.Click
+        contentMail.Document.ExecCommand("removeFormat", False, ColorTranslator.ToHtml(ColorDialog1.Color))
     End Sub
 
 End Class

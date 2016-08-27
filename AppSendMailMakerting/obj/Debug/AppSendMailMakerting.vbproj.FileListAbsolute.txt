@@ -36,3 +36,4 @@ D:\DUAN\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting
 D:\DUAN\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.InfomationForm.resources
 E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.InfomationForm.resources
 E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.SettingForm.resources
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.CheckEmailExists.resources
