@@ -102,12 +102,13 @@ Partial Class SettingForm
         '
         'tbPassword
         '
+        Me.tbPassword.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.tbPassword.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList
         Me.tbPassword.Font = New System.Drawing.Font("Times New Roman", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbPassword.Location = New System.Drawing.Point(111, 76)
         Me.tbPassword.Name = "tbPassword"
         Me.tbPassword.Size = New System.Drawing.Size(227, 23)
         Me.tbPassword.TabIndex = 3
-        Me.tbPassword.Text = "nhanviet123"
         Me.tbPassword.UseSystemPasswordChar = True
         '
         'Label7
@@ -121,12 +122,13 @@ Partial Class SettingForm
         '
         'tbEmail
         '
+        Me.tbEmail.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.tbEmail.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList
         Me.tbEmail.Font = New System.Drawing.Font("Times New Roman", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbEmail.Location = New System.Drawing.Point(111, 50)
         Me.tbEmail.Name = "tbEmail"
         Me.tbEmail.Size = New System.Drawing.Size(327, 23)
         Me.tbEmail.TabIndex = 2
-        Me.tbEmail.Text = "it007bk@gmail.com"
         '
         'Label8
         '
@@ -139,12 +141,13 @@ Partial Class SettingForm
         '
         'tbHost
         '
+        Me.tbHost.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.tbHost.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList
         Me.tbHost.Font = New System.Drawing.Font("Times New Roman", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbHost.Location = New System.Drawing.Point(110, 24)
         Me.tbHost.Name = "tbHost"
         Me.tbHost.Size = New System.Drawing.Size(327, 23)
         Me.tbHost.TabIndex = 1
-        Me.tbHost.Text = "smtp.gmail.com"
         '
         'Label9
         '
@@ -172,7 +175,7 @@ Partial Class SettingForm
         Me.txtHostFormat.ReadOnly = True
         Me.txtHostFormat.Size = New System.Drawing.Size(248, 23)
         Me.txtHostFormat.TabIndex = 1
-        Me.txtHostFormat.Text = "smtp.gmail.com"
+        Me.txtHostFormat.TabStop = False
         '
         'Label3
         '
@@ -191,7 +194,7 @@ Partial Class SettingForm
         Me.txtEmailFormat.ReadOnly = True
         Me.txtEmailFormat.Size = New System.Drawing.Size(248, 23)
         Me.txtEmailFormat.TabIndex = 2
-        Me.txtEmailFormat.Text = "it007bk@gmail.com"
+        Me.txtEmailFormat.TabStop = False
         '
         'Label4
         '
@@ -211,7 +214,7 @@ Partial Class SettingForm
         Me.txtPassFormat.ReadOnly = True
         Me.txtPassFormat.Size = New System.Drawing.Size(248, 23)
         Me.txtPassFormat.TabIndex = 3
-        Me.txtPassFormat.Text = "nhanviet123"
+        Me.txtPassFormat.TabStop = False
         '
         'GroupBox1
         '

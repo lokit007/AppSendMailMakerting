@@ -1,15 +1,50 @@
 ﻿Imports System.IO
 Imports System.Net.Mail
 Imports System.Text
+Imports System.Threading
 
 Public Class Form1
-    Private lstEmail As New List(Of String)
-    Private lstDinhKem As New LinkedList(Of String)
+    Private lstEmail As List(Of String)
+    Private Shared lstDinhKem As New LinkedList(Of String)
+    Private pathData As String = Application.StartupPath.Replace("\bin\Debug", "").Replace("\bin\Release", "") & "\Resources\ThongTin.txt"
+
+    Public Shared Sub deleteDinhKem(ByVal obj As String)
+        lstDinhKem.Remove(obj)
+    End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         For Each f In FontFamily.Families
             tcbFontFamily.Items.Add(f.Name)
         Next
+        Dim lstString As String() = File.ReadAllLines(pathData)
+        Dim isChange As Boolean = CBool(lstString(0))
+        Try
+            If "not active".Equals(lstString(5)) OrElse "active".Equals(lstString(5)) Then
+                txtHost.Text = lstString(2)
+                txtMailNguon.Text = lstString(3)
+                txtPassMailNguon.Text = lstString(4)
+            End If
+            If isChange Then
+                If "active".Equals(lstString(5)) Then
+                    txtHost.Text = lstString(6)
+                    txtMailNguon.Text = lstString(7)
+                    txtPassMailNguon.Text = lstString(8)
+                Else
+                    btnSetting_Click(sender, e)
+                End If
+            Else
+                btnSetting_Click(sender, e)
+            End If
+        Catch ex As Exception
+            If Not isChange Then
+                If "not active".Equals(lstString(5)) OrElse "active".Equals(lstString(5)) Then
+                    txtHost.Text = lstString(2)
+                    txtMailNguon.Text = lstString(3)
+                    txtPassMailNguon.Text = lstString(4)
+                End If
+            End If
+        End Try
     End Sub
 
     Private Sub contentMail_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles contentMail.DocumentCompleted
@@ -59,16 +94,87 @@ Public Class Form1
         Exit Sub
     End Sub
 
+    Private Sub SendSingeMail(ByVal nguoiGui As String, ByVal emailNhan As String,
+                              ByVal tieuDe As String, ByVal noiDung As String,
+                              ByVal lstDinhKem As List(Of String))
+        Dim MyMailMessage As New MailMessage()
+        MyMailMessage.From = New MailAddress(nguoiGui)
+        'danh sach nguoi nhận
+        MyMailMessage.To.Add(emailNhan)
+        MyMailMessage.Subject = tieuDe
+        MyMailMessage.Body = noiDung
+        MyMailMessage.IsBodyHtml = True
+        MyMailMessage.BodyEncoding = Encoding.UTF8
+        'danh sách tập tin đính kèm
+        If Not lstDinhKem Is Nothing Then
+            For i = 0 To lstDinhKem.Count - 1
+                MyMailMessage.Attachments.Add(New Attachment(lstDinhKem.Item(i).ToString))
+            Next
+        End If
+        'Khai bao thong tin mail
+        Dim SMTPServer As New SmtpClient(txtHost.Text)
+        SMTPServer.Port = 587 '25
+        SMTPServer.Credentials = New System.Net.NetworkCredential(txtMailNguon.Text, txtPassMailNguon.Text)
+        SMTPServer.EnableSsl = True ' tắt đi do có phần mềm diệt virus không cho (avasst)
+        Try
+            SMTPServer.Send(MyMailMessage)
+        Catch ex As SmtpException
+            Dim textInsert As String = "Lỗi gửi email đến " & emailNhan & vbCrLf & ex.Message
+            rtbTienTrinh.Text = textInsert & vbCrLf & rtbTienTrinh.Text
+            rtbTienTrinh.Select(0, textInsert.Length)
+            rtbTienTrinh.SelectionColor = Color.Red
+        End Try
+        Exit Sub
+    End Sub
+
     Private Sub btnGuiMail_Click(sender As Object, e As EventArgs) Handles btnGuiMail.Click
         Dim listNhan As New List(Of String)
-        listNhan.Add("doihamhieu@gmail.com")
-        subSendMail("it007bk@gmail.com", listNhan, txtTieuDe.Text, contentMail.Document.Body.InnerHtml, Nothing)
+        If dgvLstNguoiNhan.Rows.Count > 1 Then
+            For Each info As DataGridViewRow In dgvLstNguoiNhan.Rows
+                Try
+                    listNhan.Add(info.Cells(0).Value.ToString)
+                Catch ex As Exception
+                End Try
+            Next
+            If Not IsNothing(listNhan) AndAlso listNhan.Count > 0 Then
+                rtbTienTrinh.Text = ""
+                btnGuiMail.Enabled = False
+                lbWaitSendMail.Visible = True
+                pbTienTrinh.Maximum = listNhan.Count
+                pbTienTrinh.Value = 0
+                For Each emailNhan In listNhan
+                    Try
+                        Application.DoEvents()
+                        SendSingeMail("it007bk@gmail.com", emailNhan, txtTieuDe.Text, contentMail.Document.Body.InnerHtml, Nothing)
+                        Dim textInsert As String = "Đã gửi email đến " & emailNhan
+                        rtbTienTrinh.Text = textInsert & vbCrLf & rtbTienTrinh.Text
+                    Catch ex As Exception
+                        Dim textInsert As String = "Lỗi gửi email đến " & emailNhan
+                        rtbTienTrinh.Text = textInsert & vbCrLf & rtbTienTrinh.Text
+                        rtbTienTrinh.Select(0, textInsert.Length)
+                        rtbTienTrinh.SelectionColor = Color.Red
+                    End Try
+                    pbTienTrinh.Value += 1
+                Next
+                rtbTienTrinh.Text = "Tiến trình gửi mail đã hoàn tất." & vbCrLf & rtbTienTrinh.Text
+                btnGuiMail.Enabled = True
+                lbWaitSendMail.Visible = False
+            End If
+        Else
+            MsgBox("Bạn chưa nhập dánh sách người nhận mail!!!" & vbCrLf & "Vui lòng chèn dữ liệu vào danh sách khách hàng trước.", MsgBoxStyle.OkOnly, "Dữ liệu rỗng !!!")
+        End If
+    End Sub
+
+    Private Sub btnXoaTrong_Click(sender As Object, e As EventArgs) Handles btnXoaTrong.Click
+        txtTieuDe.Text = Nothing
+        contentMail.Document.Body.InnerHtml = Nothing
     End Sub
 
     Private Sub tbtnLoadDanhSach_Click(sender As Object, e As EventArgs) Handles tbtnLoadDanhSach.Click, btnThemNguoiNhan.Click
         OpenFileDialog1.Filter = "All data|*.xlsx;*.xls"
         Dim btnResult As DialogResult = OpenFileDialog1.ShowDialog
         If btnResult = DialogResult.OK Then
+            lbWaitLoadData.Visible = True
             dgvLstNguoiNhan.Columns.Clear()
             dgvLstNguoiNhan.DataSource = GetListEmail(OpenFileDialog1.FileName, "KhachHang")
             dgvLstNguoiNhan.Columns(0).HeaderText = "Email"
@@ -76,6 +182,7 @@ Public Class Form1
             dgvLstNguoiNhan.Columns(1).HeaderText = "Khách hàng"
             dgvLstNguoiNhan.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
             tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
+            lbWaitLoadData.Visible = False
         End If
     End Sub
 
@@ -110,7 +217,6 @@ Public Class Form1
     End Function
 
     Private Sub tbtnLuuDanhSach_Click(sender As Object, e As EventArgs) Handles tbtnLuuDanhSach.Click
-        MsgBox(dgvLstNguoiNhan.Rows.Count)
         If dgvLstNguoiNhan.Rows.Count > 1 Then
             SaveFileDialog1.Filter = "Excel 2007|*.xlsx|Excel 2003|*.xls"
             Dim btnResult As DialogResult = SaveFileDialog1.ShowDialog
@@ -131,9 +237,9 @@ Public Class Form1
     End Sub
 
     Private Sub saveExcel(ByVal path As String)
-        Dim oldCI As System.Globalization.CultureInfo = _
+        Dim oldCI As System.Globalization.CultureInfo =
             System.Threading.Thread.CurrentThread.CurrentCulture
-        System.Threading.Thread.CurrentThread.CurrentCulture = _
+        System.Threading.Thread.CurrentThread.CurrentCulture =
             New System.Globalization.CultureInfo("en-US")
 
         Try
@@ -148,7 +254,7 @@ Public Class Form1
                 xlSheet.Range("B" & index).Value = info.Cells(1).Value
                 index += 1
             Next
-            
+
             xlBook.Save()
             xlBook.Close()
             xlApp.Quit()
@@ -180,16 +286,28 @@ Public Class Form1
     End Sub
 
     Private Sub tbtnXoaDanhSach_Click(sender As Object, e As EventArgs) Handles tbtnXoaDanhSach.Click
-        dgvLstNguoiNhan.Rows.Clear()
-        tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
+        Try
+            dgvLstNguoiNhan.Rows.Clear()
+            tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
+        Catch ex As Exception
+            tlblHienTrang.Text = String.Format("Hiện có 0")
+        End Try
     End Sub
 
     Private Sub dgvLstNguoiNhan_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgvLstNguoiNhan.RowsAdded
-        tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
+        Try
+            tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
+        Catch ex As Exception
+            tlblHienTrang.Text = String.Format("Hiện có 0")
+        End Try
     End Sub
 
     Private Sub dgvLstNguoiNhan_RowsRemoved(sender As Object, e As DataGridViewRowsRemovedEventArgs) Handles dgvLstNguoiNhan.RowsRemoved
-        tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
+        Try
+            tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
+        Catch ex As Exception
+            MsgBox("Bạn chưa chọn khách hàng để xóa!!!", MsgBoxStyle.OkOnly, "Lỗi xóa khách hành nhận email")
+        End Try
     End Sub
 
     Private Sub txtMailNguon_Validated(sender As Object, e As EventArgs) Handles txtMailNguon.Validated
@@ -299,17 +417,15 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub tbtnDinhKem_Click(sender As Object, e As EventArgs) Handles tbtnDinhKem.Click
-        contentMail.Document.ExecCommand("removeFormat", False, Nothing)
-    End Sub
-
     Private Sub btnSetting_Click(sender As Object, e As EventArgs) Handles btnSetting.Click
         Dim obj As New SettingForm()
+        obj.StartPosition = FormStartPosition.CenterScreen
         obj.ShowDialog()
     End Sub
 
     Private Sub btnInfomation_Click(sender As Object, e As EventArgs) Handles btnInfomation.Click
         Dim obj As New InfomationForm()
+        obj.StartPosition = FormStartPosition.CenterScreen
         obj.ShowDialog()
     End Sub
 

@@ -34,3 +34,5 @@ D:\DUAN\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting
 D:\DUAN\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.vbproj.GenerateResource.Cache
 D:\DUAN\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.SettingForm.resources
 D:\DUAN\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.InfomationForm.resources
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.InfomationForm.resources
+E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.SettingForm.resources

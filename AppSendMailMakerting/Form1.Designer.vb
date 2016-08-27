@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,11 +20,11 @@ Partial Class Form1
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.btnSetting = New System.Windows.Forms.Button()
         Me.btnInfomation = New System.Windows.Forms.Button()
@@ -40,6 +40,7 @@ Partial Class Form1
         Me.txtTieuDe = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.lbWaitLoadData = New System.Windows.Forms.Label()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.tbtnXoaDanhSach = New System.Windows.Forms.ToolStripButton()
         Me.tbtnDeleteItemDanhSach = New System.Windows.Forms.ToolStripButton()
@@ -52,6 +53,7 @@ Partial Class Form1
         Me.Email = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.KhachHang = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.lbWaitSendMail = New System.Windows.Forms.Label()
         Me.ToolStrip2 = New System.Windows.Forms.ToolStrip()
         Me.tbtnDan = New System.Windows.Forms.ToolStripButton()
         Me.tbtnCopy = New System.Windows.Forms.ToolStripButton()
@@ -79,11 +81,10 @@ Partial Class Form1
         Me.tbtnMauChu = New System.Windows.Forms.ToolStripButton()
         Me.tbtnMauNen = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
-        Me.tbtnDinhKem = New System.Windows.Forms.ToolStripButton()
         Me.contentMail = New System.Windows.Forms.WebBrowser()
         Me.pbTienTrinh = New System.Windows.Forms.ProgressBar()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.txtTienTrinh = New System.Windows.Forms.TextBox()
+        Me.rtbTienTrinh = New System.Windows.Forms.RichTextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
@@ -184,12 +185,13 @@ Partial Class Form1
         '
         'txtPassMailNguon
         '
+        Me.txtPassMailNguon.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.txtPassMailNguon.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList
         Me.txtPassMailNguon.Location = New System.Drawing.Point(90, 100)
         Me.txtPassMailNguon.Name = "txtPassMailNguon"
         Me.txtPassMailNguon.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.txtPassMailNguon.Size = New System.Drawing.Size(248, 20)
         Me.txtPassMailNguon.TabIndex = 3
-        Me.txtPassMailNguon.Text = "nhanviet123"
         Me.ToolTip1.SetToolTip(Me.txtPassMailNguon, "Mật khẩu Email nguồn")
         '
         'Label4
@@ -203,11 +205,12 @@ Partial Class Form1
         '
         'txtMailNguon
         '
+        Me.txtMailNguon.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.txtMailNguon.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList
         Me.txtMailNguon.Location = New System.Drawing.Point(90, 74)
         Me.txtMailNguon.Name = "txtMailNguon"
         Me.txtMailNguon.Size = New System.Drawing.Size(248, 20)
         Me.txtMailNguon.TabIndex = 2
-        Me.txtMailNguon.Text = "it007bk@gmail.com"
         Me.ToolTip1.SetToolTip(Me.txtMailNguon, "Email nguồn, nơi email bắt đầu phát tán")
         '
         'Label3
@@ -221,11 +224,12 @@ Partial Class Form1
         '
         'txtHost
         '
+        Me.txtHost.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.txtHost.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList
         Me.txtHost.Location = New System.Drawing.Point(90, 48)
         Me.txtHost.Name = "txtHost"
         Me.txtHost.Size = New System.Drawing.Size(368, 20)
         Me.txtHost.TabIndex = 1
-        Me.txtHost.Text = "smtp.gmail.com"
         Me.ToolTip1.SetToolTip(Me.txtHost, "Địa chỉ HOST gửi mail")
         '
         'Label2
@@ -257,6 +261,7 @@ Partial Class Form1
         'GroupBox2
         '
         Me.GroupBox2.AutoSize = True
+        Me.GroupBox2.Controls.Add(Me.lbWaitLoadData)
         Me.GroupBox2.Controls.Add(Me.ToolStrip1)
         Me.GroupBox2.Controls.Add(Me.dgvLstNguoiNhan)
         Me.GroupBox2.Location = New System.Drawing.Point(7, 157)
@@ -265,6 +270,16 @@ Partial Class Form1
         Me.GroupBox2.TabIndex = 1
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Danh sách nhận mail"
+        '
+        'lbWaitLoadData
+        '
+        Me.lbWaitLoadData.BackColor = System.Drawing.Color.Transparent
+        Me.lbWaitLoadData.Image = CType(resources.GetObject("lbWaitLoadData.Image"), System.Drawing.Image)
+        Me.lbWaitLoadData.Location = New System.Drawing.Point(76, 206)
+        Me.lbWaitLoadData.Name = "lbWaitLoadData"
+        Me.lbWaitLoadData.Size = New System.Drawing.Size(70, 65)
+        Me.lbWaitLoadData.TabIndex = 2
+        Me.lbWaitLoadData.Visible = False
         '
         'ToolStrip1
         '
@@ -349,8 +364,8 @@ Partial Class Form1
         '
         'Email
         '
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Email.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle1.NullValue = Nothing
+        Me.Email.DefaultCellStyle = DataGridViewCellStyle1
         Me.Email.HeaderText = "Email"
         Me.Email.Name = "Email"
         '
@@ -362,6 +377,7 @@ Partial Class Form1
         'GroupBox3
         '
         Me.GroupBox3.AutoSize = True
+        Me.GroupBox3.Controls.Add(Me.lbWaitSendMail)
         Me.GroupBox3.Controls.Add(Me.ToolStrip2)
         Me.GroupBox3.Controls.Add(Me.contentMail)
         Me.GroupBox3.Location = New System.Drawing.Point(251, 157)
@@ -371,9 +387,19 @@ Partial Class Form1
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Nội dung gửi mail"
         '
+        'lbWaitSendMail
+        '
+        Me.lbWaitSendMail.BackColor = System.Drawing.Color.Transparent
+        Me.lbWaitSendMail.Image = CType(resources.GetObject("lbWaitSendMail.Image"), System.Drawing.Image)
+        Me.lbWaitSendMail.Location = New System.Drawing.Point(360, 206)
+        Me.lbWaitSendMail.Name = "lbWaitSendMail"
+        Me.lbWaitSendMail.Size = New System.Drawing.Size(100, 93)
+        Me.lbWaitSendMail.TabIndex = 2
+        Me.lbWaitSendMail.Visible = False
+        '
         'ToolStrip2
         '
-        Me.ToolStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tbtnDan, Me.tbtnCopy, Me.tbtnCut, Me.ToolStripSeparator2, Me.tcbFontFamily, Me.tcbFontWidth, Me.tbtnInDam, Me.tbtnInNghien, Me.tbtnGachChan, Me.ToolStripSeparator3, Me.tbtnCanhTrai, Me.tbtnCanhGiua, Me.tbtnCanhPhai, Me.tbtnCanhDieu, Me.ToolStripSeparator4, Me.tbtnChenAnh, Me.tbtnChenLink, Me.ToolStripSeparator5, Me.tbtnDanhSo, Me.tbtnList, Me.tbtnSizeLon, Me.tbtnSizeNho, Me.ToolStripSeparator7, Me.tbtnMauChu, Me.tbtnMauNen, Me.ToolStripSeparator8, Me.tbtnDinhKem})
+        Me.ToolStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tbtnDan, Me.tbtnCopy, Me.tbtnCut, Me.ToolStripSeparator2, Me.tcbFontFamily, Me.tcbFontWidth, Me.tbtnInDam, Me.tbtnInNghien, Me.tbtnGachChan, Me.ToolStripSeparator3, Me.tbtnCanhTrai, Me.tbtnCanhGiua, Me.tbtnCanhPhai, Me.tbtnCanhDieu, Me.ToolStripSeparator4, Me.tbtnChenAnh, Me.tbtnChenLink, Me.ToolStripSeparator5, Me.tbtnDanhSo, Me.tbtnList, Me.tbtnSizeLon, Me.tbtnSizeNho, Me.ToolStripSeparator7, Me.tbtnMauChu, Me.tbtnMauNen, Me.ToolStripSeparator8})
         Me.ToolStrip2.Location = New System.Drawing.Point(3, 16)
         Me.ToolStrip2.Name = "ToolStrip2"
         Me.ToolStrip2.Size = New System.Drawing.Size(800, 25)
@@ -608,16 +634,6 @@ Partial Class Form1
         Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
         Me.ToolStripSeparator8.Size = New System.Drawing.Size(6, 25)
         '
-        'tbtnDinhKem
-        '
-        Me.tbtnDinhKem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tbtnDinhKem.Image = CType(resources.GetObject("tbtnDinhKem.Image"), System.Drawing.Image)
-        Me.tbtnDinhKem.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tbtnDinhKem.Name = "tbtnDinhKem"
-        Me.tbtnDinhKem.Size = New System.Drawing.Size(23, 22)
-        Me.tbtnDinhKem.Text = "ToolStripButton22"
-        Me.tbtnDinhKem.ToolTipText = "Đính kèm file"
-        '
         'contentMail
         '
         Me.contentMail.Location = New System.Drawing.Point(3, 44)
@@ -637,25 +653,25 @@ Partial Class Form1
         '
         'GroupBox4
         '
-        Me.GroupBox4.Controls.Add(Me.txtTienTrinh)
+        Me.GroupBox4.Controls.Add(Me.rtbTienTrinh)
         Me.GroupBox4.Location = New System.Drawing.Point(677, 8)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(374, 106)
         Me.GroupBox4.TabIndex = 4
         Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "Tiến trình gửi mail"
+        Me.GroupBox4.Text = "Log tiến trình gửi mail"
         '
-        'txtTienTrinh
+        'rtbTienTrinh
         '
-        Me.txtTienTrinh.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtTienTrinh.Location = New System.Drawing.Point(3, 16)
-        Me.txtTienTrinh.Multiline = True
-        Me.txtTienTrinh.Name = "txtTienTrinh"
-        Me.txtTienTrinh.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtTienTrinh.Size = New System.Drawing.Size(368, 87)
-        Me.txtTienTrinh.TabIndex = 0
-        Me.txtTienTrinh.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.txtTienTrinh, "Log tiến trình xử lý gửi mail")
+        Me.rtbTienTrinh.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.rtbTienTrinh.Font = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rtbTienTrinh.Location = New System.Drawing.Point(3, 16)
+        Me.rtbTienTrinh.Name = "rtbTienTrinh"
+        Me.rtbTienTrinh.ReadOnly = True
+        Me.rtbTienTrinh.Size = New System.Drawing.Size(368, 87)
+        Me.rtbTienTrinh.TabIndex = 0
+        Me.rtbTienTrinh.Text = ""
+        Me.ToolTip1.SetToolTip(Me.rtbTienTrinh, "Log tiến trình")
         '
         'SaveFileDialog1
         '
@@ -674,6 +690,7 @@ Partial Class Form1
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MinimumSize = New System.Drawing.Size(1082, 624)
         Me.Name = "Form1"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Send Mail Marketing"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
@@ -687,7 +704,6 @@ Partial Class Form1
         Me.ToolStrip2.ResumeLayout(False)
         Me.ToolStrip2.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
-        Me.GroupBox4.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -742,10 +758,8 @@ Partial Class Form1
     Friend WithEvents tbtnMauChu As System.Windows.Forms.ToolStripButton
     Friend WithEvents tbtnMauNen As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolStripSeparator8 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents tbtnDinhKem As System.Windows.Forms.ToolStripButton
     Friend WithEvents pbTienTrinh As System.Windows.Forms.ProgressBar
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
-    Friend WithEvents txtTienTrinh As System.Windows.Forms.TextBox
     Friend WithEvents tbtnLuuDanhSach As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
@@ -755,4 +769,8 @@ Partial Class Form1
     Friend WithEvents KhachHang As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents btnSetting As System.Windows.Forms.Button
     Friend WithEvents btnInfomation As System.Windows.Forms.Button
+    Friend WithEvents lbWaitLoadData As Label
+    Friend WithEvents lbWaitSendMail As Label
+    Friend WithEvents flpDinhKem As FlowLayoutPanel
+    Friend WithEvents rtbTienTrinh As RichTextBox
 End Class
