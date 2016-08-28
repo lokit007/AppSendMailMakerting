@@ -38,6 +38,13 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Set max, min Threadpool
+        Dim nthread As Integer = 0
+        Dim nComPost As Integer = 0
+        ThreadPool.GetMaxThreads(nthread, nComPost)
+        ThreadPool.SetMaxThreads(1000, nComPost)
+        ThreadPool.GetMaxThreads(nthread, nComPost)
+
         For Each f In FontFamily.Families
             tcbFontFamily.Items.Add(f.Name)
         Next
@@ -69,79 +76,63 @@ Public Class Form1
         GroupBox4.Size = New Size(Me.Width - 700, 106)
     End Sub
 
-    Public Sub subSendMail(ByVal strNguoiGoi As String, ByVal lstNguoiNhan As List(Of String),
-                           ByVal strTieuDe As String, ByVal strNoiDung As String,
-                           ByVal lstTapTinDinhKem As List(Of String))
-
-        Dim MyMailMessage As New MailMessage()
-        MyMailMessage.From = New MailAddress(strNguoiGoi)
-        'danh sach nguoi nhận
-        Dim i As Integer
-        For i = 0 To lstNguoiNhan.Count - 1
-            MyMailMessage.To.Add(lstNguoiNhan.Item(i).ToString)
-        Next
-        MyMailMessage.Subject = strTieuDe
-        MyMailMessage.Body = strNoiDung
-        MyMailMessage.IsBodyHtml = True
-        MyMailMessage.BodyEncoding = Encoding.UTF8
-        'danh sách tập tin đính kèm
-        If Not lstTapTinDinhKem Is Nothing Then
-            For i = 0 To lstTapTinDinhKem.Count - 1
-                MyMailMessage.Attachments.Add(New Attachment(lstTapTinDinhKem.Item(i).ToString))
-            Next
-        End If
-        'Khai bao thong tin mail
-        Dim SMTPServer As New SmtpClient(txtHost.Text)
-        SMTPServer.Port = 587 '25
-        SMTPServer.Credentials = New System.Net.NetworkCredential(txtMailNguon.Text, txtPassMailNguon.Text)
-        SMTPServer.EnableSsl = True ' tắt đi do có phần mềm diệt virus không cho (avasst)
-        Try
-            SMTPServer.Send(MyMailMessage)
-            Application.DoEvents()
-            MsgBox("Đã gởi E-Mail xong")
-        Catch ex As SmtpException
-            MessageBox.Show(" Không gởi được, kiểm tra lại : " & ex.Message)
-        End Try
-        Exit Sub
-    End Sub
-
     Private Sub SendSingeMail(ByVal nguoiGui As String, ByVal emailNhan As String,
                               ByVal tieuDe As String, ByVal noiDung As String,
                               ByVal lstDinhKem As List(Of String))
-        Dim MyMailMessage As New MailMessage()
-        MyMailMessage.From = New MailAddress(nguoiGui)
-        'danh sach nguoi nhận
-        MyMailMessage.To.Add(emailNhan)
-        MyMailMessage.Subject = tieuDe
-        MyMailMessage.Body = noiDung
-        MyMailMessage.IsBodyHtml = True
-        MyMailMessage.BodyEncoding = Encoding.UTF8
-        'danh sách tập tin đính kèm
-        If Not lstDinhKem Is Nothing Then
-            For i = 0 To lstDinhKem.Count - 1
-                MyMailMessage.Attachments.Add(New Attachment(lstDinhKem.Item(i).ToString))
-            Next
-        End If
-        'Khai bao thong tin mail
-        Dim SMTPServer As New SmtpClient(txtHost.Text)
-        SMTPServer.Port = 587 '25
-        SMTPServer.Credentials = New System.Net.NetworkCredential(txtMailNguon.Text, txtPassMailNguon.Text)
-        SMTPServer.EnableSsl = True ' tắt đi do có phần mềm diệt virus không cho (avasst)
         Try
-            SMTPServer.Send(MyMailMessage)
-            SetText("Đã gửi đến mail " & emailNhan & vbCrLf)
-        Catch ex As SmtpException
+            Dim MyMailMessage As New MailMessage()
+            MyMailMessage.From = New MailAddress(txtMailNguon.Text, nguoiGui, Encoding.UTF8)
+            'danh sach nguoi nhận
+            MyMailMessage.To.Add(emailNhan)
+            MyMailMessage.Subject = tieuDe
+            MyMailMessage.Body = noiDung
+            MyMailMessage.IsBodyHtml = True
+            MyMailMessage.BodyEncoding = Encoding.UTF8
+            'danh sách tập tin đính kèm
+            If Not lstDinhKem Is Nothing Then
+                For i = 0 To lstDinhKem.Count - 1
+                    MyMailMessage.Attachments.Add(New Attachment(lstDinhKem.Item(i).ToString))
+                Next
+            End If
+            'Khai bao thong tin mail
+            Dim SMTPServer As New SmtpClient(txtHost.Text)
+            SMTPServer.Port = 587 '25
+            SMTPServer.EnableSsl = True ' tắt đi do có phần mềm diệt virus không cho (avasst)
+            SMTPServer.Timeout = 10000
+            SMTPServer.UseDefaultCredentials = False
+            SMTPServer.Credentials = New System.Net.NetworkCredential(txtMailNguon.Text, txtPassMailNguon.Text)
+            Try
+                SMTPServer.Send(MyMailMessage)
+                SyncLock rtbTienTrinh
+                    SetText("Đã gửi đến mail " & emailNhan & vbCrLf)
+                End SyncLock
+                Application.DoEvents()
+            Catch ex As SmtpException
+                Dim textInsert As String = "Lỗi gửi email đến " & emailNhan & vbCrLf & ex.Message
+                SyncLock rtbTienTrinh
+                    SetText(textInsert & vbCrLf)
+                End SyncLock
+            End Try
+        Catch ex As Exception
             Dim textInsert As String = "Lỗi gửi email đến " & emailNhan & vbCrLf & ex.Message
-            SetText(textInsert & vbCrLf)
+            SyncLock rtbTienTrinh
+                SetText(textInsert & vbCrLf)
+            End SyncLock
         End Try
-        SetValue()
+        SyncLock pbTienTrinh
+            SetValue()
+        End SyncLock
     End Sub
 
     Private Sub ThreadSendMail(ByVal nguoiGui As String, ByVal emailNhan As String,
                               ByVal tieuDe As String, ByVal noiDung As String,
                               ByVal lstDinhKem As List(Of String))
-        Dim tienTrinh As New Thread(New ThreadStart(Sub() SendSingeMail(nguoiGui, emailNhan, tieuDe, noiDung, lstDinhKem)))
-        tienTrinh.Start()
+
+        'Dim tienTrinh As New Thread(New ThreadStart(Sub() SendSingeMail(nguoiGui, emailNhan, tieuDe, noiDung, lstDinhKem)))
+        'tienTrinh.Start()
+
+        Dim tienTrinh As New WaitCallback(Sub() SendSingeMail(nguoiGui, emailNhan, tieuDe, noiDung, lstDinhKem))
+        ThreadPool.UnsafeQueueUserWorkItem(tienTrinh, "Send Email")
     End Sub
 
     Private Sub btnGuiMail_Click(sender As Object, e As EventArgs) Handles btnGuiMail.Click
@@ -161,7 +152,7 @@ Public Class Form1
                 pbTienTrinh.Maximum = listnhan.Count
                 pbTienTrinh.Value = 0
                 For Each emailnhan In listnhan
-                    ThreadSendMail("it007bk@gmail.com", emailnhan, txtTieuDe.Text, contentMail.Document.Body.InnerHtml, Nothing)
+                    ThreadSendMail("Bookingdanang.com", emailnhan, txtTieuDe.Text, contentMail.Document.Body.InnerHtml, Nothing)
                     Application.DoEvents()
                 Next
             End If
