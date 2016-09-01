@@ -1,11 +1,5 @@
 True
-123456
-smtp.gmail.com
-doihamhieu@gmail.com
-nhanviet1
-active
+1
 smtp.gmail.com
 it007bk@gmail.com
 nhanviet123
-
-

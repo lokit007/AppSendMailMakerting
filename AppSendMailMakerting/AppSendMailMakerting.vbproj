@@ -137,6 +137,7 @@
     </None>
     <None Include="App.config" />
     <None Include="Resources\KhachHang.xlsx" />
+    <None Include="Resources\MauKhachHang.xls" />
     <None Include="Resources\MauKhachHang.xlsx" />
   </ItemGroup>
   <ItemGroup>
@@ -152,7 +153,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppIcon.ico" />
-    <Content Include="Resources\ThongTin.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

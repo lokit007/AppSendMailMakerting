@@ -40,6 +40,7 @@ Partial Class SettingForm
         Me.Label4 = New System.Windows.Forms.Label()
         Me.txtPassFormat = New System.Windows.Forms.TextBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.cbSmtpHost = New System.Windows.Forms.ComboBox()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
@@ -49,9 +50,9 @@ Partial Class SettingForm
         Me.btnXoaTrong.Font = New System.Drawing.Font("Times New Roman", 11.25!, System.Drawing.FontStyle.Bold)
         Me.btnXoaTrong.Image = CType(resources.GetObject("btnXoaTrong.Image"), System.Drawing.Image)
         Me.btnXoaTrong.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnXoaTrong.Location = New System.Drawing.Point(369, 73)
+        Me.btnXoaTrong.Location = New System.Drawing.Point(430, 84)
         Me.btnXoaTrong.Name = "btnXoaTrong"
-        Me.btnXoaTrong.Size = New System.Drawing.Size(92, 42)
+        Me.btnXoaTrong.Size = New System.Drawing.Size(107, 48)
         Me.btnXoaTrong.TabIndex = 6
         Me.btnXoaTrong.Text = "Xóa trống"
         Me.btnXoaTrong.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -62,9 +63,9 @@ Partial Class SettingForm
         Me.btnCapNhat.Font = New System.Drawing.Font("Times New Roman", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCapNhat.Image = CType(resources.GetObject("btnCapNhat.Image"), System.Drawing.Image)
         Me.btnCapNhat.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnCapNhat.Location = New System.Drawing.Point(369, 28)
+        Me.btnCapNhat.Location = New System.Drawing.Point(430, 32)
         Me.btnCapNhat.Name = "btnCapNhat"
-        Me.btnCapNhat.Size = New System.Drawing.Size(92, 41)
+        Me.btnCapNhat.Size = New System.Drawing.Size(107, 47)
         Me.btnCapNhat.TabIndex = 7
         Me.btnCapNhat.Text = "Cập nhật"
         Me.btnCapNhat.TextAlign = System.Drawing.ContentAlignment.BottomCenter
@@ -80,9 +81,9 @@ Partial Class SettingForm
         Me.GroupBox3.Controls.Add(Me.tbHost)
         Me.GroupBox3.Controls.Add(Me.Label9)
         Me.GroupBox3.Font = New System.Drawing.Font("Times New Roman", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox3.Location = New System.Drawing.Point(5, 131)
+        Me.GroupBox3.Location = New System.Drawing.Point(6, 151)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(456, 110)
+        Me.GroupBox3.Size = New System.Drawing.Size(532, 127)
         Me.GroupBox3.TabIndex = 1
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Cập nhật thông tin email marketing"
@@ -92,9 +93,9 @@ Partial Class SettingForm
         Me.btnShowPass.Font = New System.Drawing.Font("Times New Roman", 9.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnShowPass.Image = CType(resources.GetObject("btnShowPass.Image"), System.Drawing.Image)
         Me.btnShowPass.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnShowPass.Location = New System.Drawing.Point(344, 76)
+        Me.btnShowPass.Location = New System.Drawing.Point(401, 87)
         Me.btnShowPass.Name = "btnShowPass"
-        Me.btnShowPass.Size = New System.Drawing.Size(93, 23)
+        Me.btnShowPass.Size = New System.Drawing.Size(108, 25)
         Me.btnShowPass.TabIndex = 4
         Me.btnShowPass.Text = "Password"
         Me.btnShowPass.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -105,16 +106,16 @@ Partial Class SettingForm
         Me.tbPassword.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
         Me.tbPassword.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList
         Me.tbPassword.Font = New System.Drawing.Font("Times New Roman", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tbPassword.Location = New System.Drawing.Point(111, 76)
+        Me.tbPassword.Location = New System.Drawing.Point(129, 88)
         Me.tbPassword.Name = "tbPassword"
-        Me.tbPassword.Size = New System.Drawing.Size(227, 23)
+        Me.tbPassword.Size = New System.Drawing.Size(264, 23)
         Me.tbPassword.TabIndex = 3
         Me.tbPassword.UseSystemPasswordChar = True
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(11, 79)
+        Me.Label7.Location = New System.Drawing.Point(13, 91)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(77, 17)
         Me.Label7.TabIndex = 0
@@ -125,15 +126,15 @@ Partial Class SettingForm
         Me.tbEmail.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
         Me.tbEmail.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList
         Me.tbEmail.Font = New System.Drawing.Font("Times New Roman", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tbEmail.Location = New System.Drawing.Point(111, 50)
+        Me.tbEmail.Location = New System.Drawing.Point(129, 58)
         Me.tbEmail.Name = "tbEmail"
-        Me.tbEmail.Size = New System.Drawing.Size(327, 23)
+        Me.tbEmail.Size = New System.Drawing.Size(381, 23)
         Me.tbEmail.TabIndex = 2
         '
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(11, 53)
+        Me.Label8.Location = New System.Drawing.Point(13, 61)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(94, 17)
         Me.Label8.TabIndex = 0
@@ -144,15 +145,15 @@ Partial Class SettingForm
         Me.tbHost.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
         Me.tbHost.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList
         Me.tbHost.Font = New System.Drawing.Font("Times New Roman", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tbHost.Location = New System.Drawing.Point(110, 24)
+        Me.tbHost.Location = New System.Drawing.Point(128, 28)
         Me.tbHost.Name = "tbHost"
-        Me.tbHost.Size = New System.Drawing.Size(327, 23)
+        Me.tbHost.Size = New System.Drawing.Size(381, 23)
         Me.tbHost.TabIndex = 1
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(11, 27)
+        Me.Label9.Location = New System.Drawing.Point(13, 31)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(96, 17)
         Me.Label9.TabIndex = 0
@@ -161,85 +162,97 @@ Partial Class SettingForm
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(11, 27)
+        Me.Label2.Location = New System.Drawing.Point(13, 31)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(70, 13)
+        Me.Label2.Size = New System.Drawing.Size(77, 15)
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "Gửi từ địa chỉ"
         '
         'txtHostFormat
         '
         Me.txtHostFormat.Font = New System.Drawing.Font("Times New Roman", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtHostFormat.Location = New System.Drawing.Point(90, 24)
+        Me.txtHostFormat.Location = New System.Drawing.Point(105, 28)
         Me.txtHostFormat.Name = "txtHostFormat"
         Me.txtHostFormat.ReadOnly = True
-        Me.txtHostFormat.Size = New System.Drawing.Size(248, 23)
+        Me.txtHostFormat.Size = New System.Drawing.Size(184, 23)
         Me.txtHostFormat.TabIndex = 1
         Me.txtHostFormat.TabStop = False
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(11, 53)
+        Me.Label3.Location = New System.Drawing.Point(13, 61)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(71, 13)
+        Me.Label3.Size = New System.Drawing.Size(79, 15)
         Me.Label3.TabIndex = 0
         Me.Label3.Text = "Email nguồn :"
         '
         'txtEmailFormat
         '
         Me.txtEmailFormat.Font = New System.Drawing.Font("Times New Roman", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtEmailFormat.Location = New System.Drawing.Point(90, 50)
+        Me.txtEmailFormat.Location = New System.Drawing.Point(105, 58)
         Me.txtEmailFormat.Name = "txtEmailFormat"
         Me.txtEmailFormat.ReadOnly = True
-        Me.txtEmailFormat.Size = New System.Drawing.Size(248, 23)
+        Me.txtEmailFormat.Size = New System.Drawing.Size(289, 23)
         Me.txtEmailFormat.TabIndex = 2
         Me.txtEmailFormat.TabStop = False
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(11, 79)
+        Me.Label4.Location = New System.Drawing.Point(13, 91)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(58, 13)
+        Me.Label4.Size = New System.Drawing.Size(64, 15)
         Me.Label4.TabIndex = 0
         Me.Label4.Text = "Mật khẩu :"
         '
         'txtPassFormat
         '
         Me.txtPassFormat.Font = New System.Drawing.Font("Times New Roman", 10.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPassFormat.Location = New System.Drawing.Point(90, 76)
+        Me.txtPassFormat.Location = New System.Drawing.Point(105, 88)
         Me.txtPassFormat.Name = "txtPassFormat"
         Me.txtPassFormat.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.txtPassFormat.ReadOnly = True
-        Me.txtPassFormat.Size = New System.Drawing.Size(248, 23)
+        Me.txtPassFormat.Size = New System.Drawing.Size(289, 23)
         Me.txtPassFormat.TabIndex = 3
         Me.txtPassFormat.TabStop = False
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.cbSmtpHost)
         Me.GroupBox1.Controls.Add(Me.txtPassFormat)
         Me.GroupBox1.Controls.Add(Me.Label4)
         Me.GroupBox1.Controls.Add(Me.txtEmailFormat)
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.txtHostFormat)
         Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Location = New System.Drawing.Point(5, 6)
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 7)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(358, 109)
+        Me.GroupBox1.Size = New System.Drawing.Size(418, 126)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Ví dụ về thông tin email marketing"
         '
+        'cbSmtpHost
+        '
+        Me.cbSmtpHost.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.cbSmtpHost.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.cbSmtpHost.FormattingEnabled = True
+        Me.cbSmtpHost.Location = New System.Drawing.Point(296, 28)
+        Me.cbSmtpHost.Name = "cbSmtpHost"
+        Me.cbSmtpHost.Size = New System.Drawing.Size(97, 23)
+        Me.cbSmtpHost.TabIndex = 4
+        '
         'SettingForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(472, 249)
+        Me.ClientSize = New System.Drawing.Size(551, 287)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.btnCapNhat)
         Me.Controls.Add(Me.btnXoaTrong)
+        Me.Font = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -269,4 +282,5 @@ Partial Class SettingForm
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents txtPassFormat As System.Windows.Forms.TextBox
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents cbSmtpHost As System.Windows.Forms.ComboBox
 End Class

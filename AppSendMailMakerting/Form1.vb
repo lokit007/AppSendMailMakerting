@@ -4,7 +4,8 @@ Imports System.Text
 Imports System.Threading
 
 Public Class Form1
-    Private lstEmail As List(Of String)
+    Private lstEmail As New Dictionary(Of String, String)
+    Private lstEmailError As New Dictionary(Of String, String)
     Private pathData As String = Application.StartupPath.Replace("\bin\Debug", "").Replace("\bin\Release", "") & "\Resources\ThongTin.txt"
 
     'Định nghĩa lại hàm settext
@@ -17,6 +18,7 @@ Public Class Form1
             Me.rtbTienTrinh.Text = [text] & Me.rtbTienTrinh.Text
         End If
     End Sub
+
     'Định nghĩa lại hàm SetValue
     Delegate Sub SetValueCallback()
     Private Sub SetValue()
@@ -27,16 +29,38 @@ Public Class Form1
             Me.pbTienTrinh.PerformStep()
         End If
     End Sub
-
+    'Kiểm tra tiến trình gửi mail
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         If pbTienTrinh.Value >= pbTienTrinh.Maximum Then
             btnGuiMail.Enabled = True
             lbWaitSendMail.Visible = False
             rtbTienTrinh.Text = "********** Hoàn thành tiến trình gửi mail **********" & vbCrLf & rtbTienTrinh.Text
+            If Not IsNothing(lstEmailError) AndAlso lstEmailError.Count > 0 Then
+                rtbTienTrinh.Text = "********** Có " & lstEmailError.Count & " không thể gửi được(Nguyên nhân email ảo, hoặc đã chặn email của bạn) **********" & vbCrLf & rtbTienTrinh.Text
+                RemoteEmail()
+            End If
             Timer1.Stop()
         End If
     End Sub
-
+    'Xóa email không gửi được hoặc không hợp lệ
+    Private Sub RemoteEmail()
+        If Not IsNothing(lstEmailError) AndAlso lstEmailError.Count > 0 _
+            AndAlso dgvLstNguoiNhan.Rows.Count > 1 Then
+            Dim btnResult As DialogResult = MsgBox("Có " & lstEmailError.Count & " lỗi, hoặc không hợp lệ!!!!" &
+            vbCrLf & "Bạn có muốn xóa chúng khỏi danh sách không???", MsgBoxStyle.YesNo, "Format Email lỗi !!!")
+            If btnResult = DialogResult.Yes Then
+                For Each mailError In lstEmailError
+                    For Each row As DataGridViewRow In dgvLstNguoiNhan.Rows
+                        If mailError.Key.Equals(row.Cells(0).Value) Then
+                            dgvLstNguoiNhan.Rows.Remove(row)
+                            Exit For
+                        End If
+                    Next
+                Next
+            End If
+        End If
+    End Sub
+    'Load dữ liệu hệ thống
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Set max, min Threadpool
         Dim nthread As Integer = 0
@@ -44,17 +68,12 @@ Public Class Form1
         ThreadPool.GetMaxThreads(nthread, nComPost)
         ThreadPool.SetMaxThreads(1000, nComPost)
         ThreadPool.GetMaxThreads(nthread, nComPost)
-
         For Each f In FontFamily.Families
             tcbFontFamily.Items.Add(f.Name)
         Next
-        Dim lstString As String() = File.ReadAllLines(pathData)
-        Dim isChange As Boolean = CBool(lstString(0))
         Try
-            txtHost.Text = lstString(6)
-            txtMailNguon.Text = lstString(7)
-            txtPassMailNguon.Text = lstString(8)
-        Catch ex As Exception
+            Dim lstString As String() = File.ReadAllLines(pathData)
+            Dim isChange As Boolean = CBool(lstString(0))
             Try
                 txtHost.Text = lstString(2)
                 txtMailNguon.Text = lstString(3)
@@ -62,20 +81,22 @@ Public Class Form1
             Catch ex1 As Exception
                 btnSetting_Click(sender, e)
             End Try
+        Catch ex As Exception
+            btnSetting_Click(sender, e)
         End Try
     End Sub
-
+    'Set HTML
     Private Sub contentMail_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs) Handles contentMail.DocumentCompleted
         contentMail.Document.ExecCommand("EditMode", False, Nothing)
     End Sub
-
+    'Resize Form
     Private Sub Form1_MaximumSizeChanged(sender As Object, e As EventArgs) Handles MyBase.SizeChanged
         pbTienTrinh.Size = New Size(Me.Width - 700, 23)
         dgvLstNguoiNhan.Size = New Size(227, Me.Height - 245)
         contentMail.Size = New Size(Me.Width - 290, Me.Height - 250)
         GroupBox4.Size = New Size(Me.Width - 700, 106)
     End Sub
-
+    'Tiến trình gửi mail
     Private Sub SendSingeMail(ByVal nguoiGui As String, ByVal emailNhan As String,
                               ByVal tieuDe As String, ByVal noiDung As String,
                               ByVal lstDinhKem As List(Of String))
@@ -95,26 +116,33 @@ Public Class Form1
                 Next
             End If
             'Khai bao thong tin mail
-            Dim SMTPServer As New SmtpClient(txtHost.Text)
-            SMTPServer.Port = 587 '25
+            Dim SMTPServer As New SmtpClient(txtHost.Text, 25) '587 '25
             SMTPServer.EnableSsl = True ' tắt đi do có phần mềm diệt virus không cho (avasst)
-            SMTPServer.Timeout = 10000
+            SMTPServer.Timeout = 300000
             SMTPServer.UseDefaultCredentials = False
             SMTPServer.Credentials = New System.Net.NetworkCredential(txtMailNguon.Text, txtPassMailNguon.Text)
             Try
                 SMTPServer.Send(MyMailMessage)
                 SyncLock rtbTienTrinh
-                    SetText("Đã gửi đến mail " & emailNhan & vbCrLf)
+                    SetText(Date.Now.ToString("HH:mm:ss") & " : Đã gửi đến mail " & emailNhan & vbCrLf)
                 End SyncLock
                 Application.DoEvents()
             Catch ex As SmtpException
-                Dim textInsert As String = "Lỗi gửi email đến " & emailNhan & vbCrLf & ex.Message
+                Try
+                    lstEmailError.Add(emailNhan, ex.Message)
+                Catch ex1 As Exception
+                End Try
+                Dim textInsert As String = Date.Now.ToString("HH:mm:ss") & " : Lỗi gửi email đến " & emailNhan & vbCrLf & ex.Message
                 SyncLock rtbTienTrinh
                     SetText(textInsert & vbCrLf)
                 End SyncLock
             End Try
         Catch ex As Exception
-            Dim textInsert As String = "Lỗi gửi email đến " & emailNhan & vbCrLf & ex.Message
+            Try
+                lstEmailError.Add(emailNhan, ex.Message)
+            Catch ex1 As Exception
+            End Try
+            Dim textInsert As String = Date.Now.ToString("HH:mm:ss") & " : Lỗi gửi email đến " & emailNhan & vbCrLf & ex.Message
             SyncLock rtbTienTrinh
                 SetText(textInsert & vbCrLf)
             End SyncLock
@@ -123,24 +151,51 @@ Public Class Form1
             SetValue()
         End SyncLock
     End Sub
-
+    'Threadpool gửi mail đồng bộ
     Private Sub ThreadSendMail(ByVal nguoiGui As String, ByVal emailNhan As String,
                               ByVal tieuDe As String, ByVal noiDung As String,
                               ByVal lstDinhKem As List(Of String))
-
-        'Dim tienTrinh As New Thread(New ThreadStart(Sub() SendSingeMail(nguoiGui, emailNhan, tieuDe, noiDung, lstDinhKem)))
-        'tienTrinh.Start()
-
         Dim tienTrinh As New WaitCallback(Sub() SendSingeMail(nguoiGui, emailNhan, tieuDe, noiDung, lstDinhKem))
         ThreadPool.UnsafeQueueUserWorkItem(tienTrinh, "Send Email")
     End Sub
-
+    'Btn gửi mail được kích hoạt
     Private Sub btnGuiMail_Click(sender As Object, e As EventArgs) Handles btnGuiMail.Click
+        If String.IsNullOrEmpty(txtHost.Text) Then
+            MsgBox("Bạn chưa cấu hình Host Mail(SMTP Host)!!!", MsgBoxStyle.OkOnly, "Lỗi cấu hình email")
+            txtHost.Focus()
+            Exit Sub
+        End If
+        If String.IsNullOrEmpty(txtMailNguon.Text) Then
+            MsgBox("Bạn chưa cấu hình Email nguồn(Email quảng bá)!!!", MsgBoxStyle.OkOnly, "Lỗi cấu hình email")
+            txtMailNguon.Focus()
+            Exit Sub
+        End If
+        If String.IsNullOrEmpty(txtTieuDe.Text) Then
+            MsgBox("Bạn chưa nhập tiêu đề mail!!!", MsgBoxStyle.OkOnly, "Lỗi cấu hình email")
+            txtTieuDe.Focus()
+            Exit Sub
+        End If
+        If String.IsNullOrEmpty(contentMail.Document.Body.InnerText) Then
+            MsgBox("Bạn chưa nhập nội dung email quảng bá!!!", MsgBoxStyle.OkOnly, "Lỗi cấu hình email")
+            contentMail.Focus()
+            Exit Sub
+        End If
         Dim listnhan As New List(Of String)
         If dgvLstNguoiNhan.Rows.Count > 1 Then
+            lstEmailError.Clear()
+            Dim email As String = ""
+            Dim a As MailAddress
             For Each info As DataGridViewRow In dgvLstNguoiNhan.Rows
                 Try
-                    listnhan.Add(info.Cells(0).Value.ToString)
+                    email = info.Cells(0).Value.ToString
+                    Try
+                        a = New MailAddress(email)
+                        listnhan.Add(email)
+                    Catch ex As Exception
+                        rtbTienTrinh.Text = Date.Now.ToString("HH:mm:ss") & " : Lỗi gửi email không đúng(Không phải định dạng email) " &
+                            email & vbCrLf & ex.Message & vbCrLf & rtbTienTrinh.Text
+                        lstEmailError.Add(email, ex.Message)
+                    End Try
                 Catch ex As Exception
                 End Try
             Next
@@ -161,12 +216,12 @@ Public Class Form1
         End If
         Exit Sub
     End Sub
-
+    'Bnt xóa trống được kích hoạt
     Private Sub btnXoaTrong_Click(sender As Object, e As EventArgs) Handles btnXoaTrong.Click
         txtTieuDe.Text = Nothing
         contentMail.Document.Body.InnerHtml = Nothing
     End Sub
-
+    'Load danh sách từ file excel
     Private Sub tbtnLoadDanhSach_Click(sender As Object, e As EventArgs) Handles tbtnLoadDanhSach.Click, btnThemNguoiNhan.Click
         OpenFileDialog1.Filter = "All data|*.xlsx;*.xls"
         Dim btnResult As DialogResult = OpenFileDialog1.ShowDialog
@@ -175,30 +230,35 @@ Public Class Form1
             Dim dtResult As DataTable = GetListEmail(OpenFileDialog1.FileName, "KhachHang")
             If Not IsNothing(dtResult) AndAlso dtResult.Rows.Count > 0 Then
                 Dim index As Integer = 0
+                lstEmail.Clear()
                 For Each row As DataRow In dtResult.Rows
-                    index = dgvLstNguoiNhan.Rows.Add()
-                    dgvLstNguoiNhan(0, index).Value = row.Item(0)
-                    dgvLstNguoiNhan(1, index).Value = row.Item(1)
+                    Try
+                        lstEmail.Add(row.Item(0), row.Item(1))
+                        index = dgvLstNguoiNhan.Rows.Add()
+                        dgvLstNguoiNhan(0, index).Value = row.Item(0)
+                        dgvLstNguoiNhan(1, index).Value = row.Item(1)
+                    Catch ex As Exception
+                    End Try
                 Next
             End If
             tlblHienTrang.Text = String.Format("Hiện có {0}", dgvLstNguoiNhan.Rows.Count - 1)
             lbWaitLoadData.Visible = False
         End If
     End Sub
-
+    'Seting hệ thống
     Private Sub btnSetting_Click(sender As Object, e As EventArgs) Handles btnSetting.Click
         Dim obj As New SettingForm()
         obj.StartPosition = FormStartPosition.CenterScreen
         obj.ShowDialog()
         Me.OnLoad(e)
     End Sub
-
+    'Thông tin app
     Private Sub btnInfomation_Click(sender As Object, e As EventArgs) Handles btnInfomation.Click
         Dim obj As New InfomationForm()
         obj.StartPosition = FormStartPosition.CenterScreen
         obj.ShowDialog()
     End Sub
-
+    'Get danh sách email từ excel
     Private Function GetListEmail(ByVal path As String, ByVal sheetName As String) As DataTable
         If File.Exists(path) Then
             Dim myconnection As System.Data.OleDb.OleDbConnection = Nothing
@@ -218,7 +278,7 @@ Public Class Form1
             Return Nothing
         End If
     End Function
-
+    'Get kết nối
     Private Function GetConnectionString(ByVal excelFileName As String) As String
         Dim strConnectionString As String = ""
         If Path.GetExtension(excelFileName).ToLower() = ".xlsx" Then
@@ -228,13 +288,18 @@ Public Class Form1
         End If
         Return (strConnectionString)
     End Function
-
+    'Save danh sách email
     Private Sub tbtnLuuDanhSach_Click(sender As Object, e As EventArgs) Handles tbtnLuuDanhSach.Click
         If dgvLstNguoiNhan.Rows.Count > 1 Then
             SaveFileDialog1.Filter = "Excel 2007|*.xlsx|Excel 2003|*.xls"
             Dim btnResult As DialogResult = SaveFileDialog1.ShowDialog
             If btnResult = DialogResult.OK Then
-                Dim pathMau As String = Application.StartupPath.Replace("\bin\Debug", "").Replace("\bin\Release", "") & "\Resources\MauKhachHang.xlsx"
+                Dim pathMau As String = Application.StartupPath.Replace("\bin\Debug", "").Replace("\bin\Release", "")
+                If SaveFileDialog1.FileName.Substring(SaveFileDialog1.FileName.LastIndexOf(".") + 1).Equals("xls") Then
+                    pathMau &= "\Resources\MauKhachHang.xls"
+                Else
+                    pathMau &= "\Resources\MauKhachHang.xlsx"
+                End If
                 Try
                     If File.Exists(pathMau) Then
                         File.Copy(pathMau, SaveFileDialog1.FileName, True)
