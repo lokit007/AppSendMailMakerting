@@ -36,20 +36,6 @@ D:\DUAN\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting
 D:\DUAN\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.InfomationForm.resources
 E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.InfomationForm.resources
 E:\DUAN\VBNET\AppSendMailMakerting\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.SettingForm.resources
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.exe.config
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.vbproj.ResolveComReference.cache
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.exe
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.xml
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.pdb
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.exe
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.pdb
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.xml
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.vbprojResolveAssemblyReference.cache
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.Form1.resources
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.InfomationForm.resources
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.Resources.resources
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.SettingForm.resources
-D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.vbproj.GenerateResource.Cache
 E:\DUAN\File Debug Setup\AppSendMailMakerting-master\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.exe.config
 E:\DUAN\File Debug Setup\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.vbproj.ResolveComReference.cache
 E:\DUAN\File Debug Setup\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.exe
@@ -63,3 +49,16 @@ E:\DUAN\File Debug Setup\AppSendMailMakerting-master\AppSendMailMakerting\obj\De
 E:\DUAN\File Debug Setup\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.Resources.resources
 E:\DUAN\File Debug Setup\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.SettingForm.resources
 E:\DUAN\File Debug Setup\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.vbproj.GenerateResource.Cache
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.exe.config
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.vbproj.ResolveComReference.cache
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.exe
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.pdb
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\bin\Debug\AppSendMailMakerting.xml
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.Form1.resources
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.InfomationForm.resources
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.Resources.resources
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.SettingForm.resources
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.vbproj.GenerateResource.Cache
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.exe
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.xml
+D:\DUAN\AppSendMailMakerting-master\AppSendMailMakerting\obj\Debug\AppSendMailMakerting.pdb

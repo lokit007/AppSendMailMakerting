@@ -15,6 +15,7 @@ Public Class Form1
             Dim d As New SetTextCallback(AddressOf SetText)
             Me.Invoke(d, New Object() {[text]})
         Else
+            Me.rtbTienTrinh.Font = New Font("Times New Roman", 9)
             Me.rtbTienTrinh.Text = [text] & Me.rtbTienTrinh.Text
         End If
     End Sub
@@ -34,12 +35,12 @@ Public Class Form1
         If pbTienTrinh.Value >= pbTienTrinh.Maximum Then
             btnGuiMail.Enabled = True
             lbWaitSendMail.Visible = False
+            Timer1.Stop()
             rtbTienTrinh.Text = "********** Hoàn thành tiến trình gửi mail **********" & vbCrLf & rtbTienTrinh.Text
             If Not IsNothing(lstEmailError) AndAlso lstEmailError.Count > 0 Then
                 rtbTienTrinh.Text = "********** Có " & lstEmailError.Count & " không thể gửi được(Nguyên nhân email ảo, hoặc đã chặn email của bạn) **********" & vbCrLf & rtbTienTrinh.Text
                 RemoteEmail()
             End If
-            Timer1.Stop()
         End If
     End Sub
     'Xóa email không gửi được hoặc không hợp lệ
@@ -62,18 +63,24 @@ Public Class Form1
     End Sub
     'Load dữ liệu hệ thống
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         'Set max, min Threadpool
         Dim nthread As Integer = 0
         Dim nComPost As Integer = 0
         ThreadPool.GetMaxThreads(nthread, nComPost)
-        ThreadPool.SetMaxThreads(1000, nComPost)
+        ThreadPool.SetMaxThreads(20, nComPost)
         ThreadPool.GetMaxThreads(nthread, nComPost)
+
         For Each f In FontFamily.Families
             tcbFontFamily.Items.Add(f.Name)
         Next
+
         Try
             Dim lstString As String() = File.ReadAllLines(pathData)
-            Dim isChange As Boolean = CBool(lstString(0))
+            Dim nics() As Net.NetworkInformation.NetworkInterface = Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces()
+            If Not nics(1).GetPhysicalAddress.ToString.Equals(lstString(5)) Then
+                btnInfomation_Click(sender, e)
+            End If
             Try
                 txtHost.Text = lstString(2)
                 txtMailNguon.Text = lstString(3)
@@ -100,6 +107,8 @@ Public Class Form1
     Private Sub SendSingeMail(ByVal nguoiGui As String, ByVal emailNhan As String,
                               ByVal tieuDe As String, ByVal noiDung As String,
                               ByVal lstDinhKem As List(Of String))
+        Dim rd As New Random
+        Thread.Sleep(rd.Next(30000, 300000))
         Try
             Dim MyMailMessage As New MailMessage()
             MyMailMessage.From = New MailAddress(txtMailNguon.Text, nguoiGui, Encoding.UTF8)
@@ -118,10 +127,13 @@ Public Class Form1
             'Khai bao thong tin mail
             Dim SMTPServer As New SmtpClient(txtHost.Text, 25) '587 '25
             SMTPServer.EnableSsl = True ' tắt đi do có phần mềm diệt virus không cho (avasst)
-            SMTPServer.Timeout = 300000
+            SMTPServer.Timeout = 40 * 60000
             SMTPServer.UseDefaultCredentials = False
             SMTPServer.Credentials = New System.Net.NetworkCredential(txtMailNguon.Text, txtPassMailNguon.Text)
             Try
+                SyncLock rtbTienTrinh
+                    SetText(Date.Now.ToString("HH:mm:ss") & " : Đang gửi mail đến " & emailNhan & vbCrLf)
+                End SyncLock
                 SMTPServer.Send(MyMailMessage)
                 SyncLock rtbTienTrinh
                     SetText(Date.Now.ToString("HH:mm:ss") & " : Đã gửi đến mail " & emailNhan & vbCrLf)
@@ -142,7 +154,7 @@ Public Class Form1
                 lstEmailError.Add(emailNhan, ex.Message)
             Catch ex1 As Exception
             End Try
-            Dim textInsert As String = Date.Now.ToString("HH:mm:ss") & " : Lỗi gửi email đến " & emailNhan & vbCrLf & ex.Message
+            Dim textInsert As String = Date.Now.ToString("HH:mm:ss") & " : Lỗi " & emailNhan & " email không tồn tại" & vbCrLf & ex.Message
             SyncLock rtbTienTrinh
                 SetText(textInsert & vbCrLf)
             End SyncLock
@@ -230,13 +242,20 @@ Public Class Form1
             Dim dtResult As DataTable = GetListEmail(OpenFileDialog1.FileName, "KhachHang")
             If Not IsNothing(dtResult) AndAlso dtResult.Rows.Count > 0 Then
                 Dim index As Integer = 0
+                Dim emailKhach, nameKhach As String
                 lstEmail.Clear()
                 For Each row As DataRow In dtResult.Rows
                     Try
-                        lstEmail.Add(row.Item(0), row.Item(1))
+                        nameKhach = row.Item(1)
+                    Catch ex As Exception
+                        nameKhach = "Not value"
+                    End Try
+                    Try
+                        emailKhach = row.Item(0)
+                        lstEmail.Add(emailKhach, nameKhach)
                         index = dgvLstNguoiNhan.Rows.Add()
-                        dgvLstNguoiNhan(0, index).Value = row.Item(0)
-                        dgvLstNguoiNhan(1, index).Value = row.Item(1)
+                        dgvLstNguoiNhan(0, index).Value = emailKhach
+                        dgvLstNguoiNhan(1, index).Value = nameKhach
                     Catch ex As Exception
                     End Try
                 Next
@@ -257,6 +276,7 @@ Public Class Form1
         Dim obj As New InfomationForm()
         obj.StartPosition = FormStartPosition.CenterScreen
         obj.ShowDialog()
+        End
     End Sub
     'Get danh sách email từ excel
     Private Function GetListEmail(ByVal path As String, ByVal sheetName As String) As DataTable

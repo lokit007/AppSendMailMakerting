@@ -1,5 +1,6 @@
 True
 1
 smtp.gmail.com
-it007bk@gmail.com
-nhanviet123
+bkwoodroot@gmail.com
+bkwood2015
+00FFA0E4B263

@@ -24,7 +24,7 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.btnSetting = New System.Windows.Forms.Button()
         Me.btnInfomation = New System.Windows.Forms.Button()
@@ -367,8 +367,8 @@ Partial Class Form1
         '
         'Email
         '
-        DataGridViewCellStyle1.NullValue = Nothing
-        Me.Email.DefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Email.DefaultCellStyle = DataGridViewCellStyle2
         Me.Email.HeaderText = "Email"
         Me.Email.Name = "Email"
         '
@@ -678,7 +678,7 @@ Partial Class Form1
         'rtbTienTrinh
         '
         Me.rtbTienTrinh.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.rtbTienTrinh.Font = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rtbTienTrinh.Font = New System.Drawing.Font("Times New Roman", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.rtbTienTrinh.Location = New System.Drawing.Point(3, 16)
         Me.rtbTienTrinh.Name = "rtbTienTrinh"
         Me.rtbTienTrinh.ReadOnly = True

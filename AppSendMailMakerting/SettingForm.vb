@@ -39,10 +39,12 @@ Public Class SettingForm
                     Close()
                 End If
             Catch ex As Exception
-                MsgBox("Đã cập nhật cấu hình thất bại!!!", MsgBoxStyle.OkOnly, "Cập nhật thất bại!!!")
+                MsgBox("Cập nhật cấu hình thất bại!!!", MsgBoxStyle.OkOnly, "Cập nhật thất bại!!!")
             End Try
         Else
-            Dim lstString As String() = {"True", "1", tbHost.Text, tbEmail.Text, tbPassword.Text}
+
+            Dim nics() As Net.NetworkInformation.NetworkInterface = Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces()
+            Dim lstString As String() = {"True", "1", tbHost.Text, tbEmail.Text, tbPassword.Text, nics(1).GetPhysicalAddress.ToString}
             File.WriteAllLines(path, lstString)
             Dim btnResult As DialogResult = MsgBox("Đã cập nhật cấu hình thành công" & vbCrLf & "Bạn thoát khỏi màn hình này không ???", MsgBoxStyle.YesNo, "Cập nhật thành công")
             If btnResult = DialogResult.Yes Then
